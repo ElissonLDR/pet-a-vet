@@ -157,10 +157,10 @@ const DISPLAY_WORD =
 
 function BigTypeStage({ mirrored = false }: { mirrored?: boolean }) {
   return (
-    <div className="relative h-[clamp(17rem,50vw,44rem)] w-full overflow-hidden">
+    <div className="relative h-[clamp(15rem,40vw,36rem)] w-full overflow-hidden">
       <div
         aria-hidden="true"
-        className="absolute top-[26%] left-1/2 w-max -translate-x-1/2"
+        className="absolute top-[10%] left-1/2 w-max -translate-x-1/2"
       >
         <span className={DISPLAY_WORD}>PET A VET</span>
         <span className={`pv-mirror ${DISPLAY_WORD}`}>PET A VET</span>
@@ -170,12 +170,12 @@ function BigTypeStage({ mirrored = false }: { mirrored?: boolean }) {
         alt={
           mirrored
             ? ""
-            : "Veterinária da Pet a Vet sentada segurando um cachorro e um gato"
+            : "Golden retriever entre uma mala com um gato em cima e uma pilha de bagagens com bolsa de transporte e passaporte"
         }
         aria-hidden={mirrored || undefined}
-        width={1209}
-        height={1300}
-        className="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
+        width={1487}
+        height={1000}
+        className="absolute bottom-0 left-1/2 h-[88%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
       />
     </div>
   );

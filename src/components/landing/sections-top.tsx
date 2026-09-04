@@ -24,8 +24,9 @@ import {
 import { Cta, Eyebrow, IconRail, LogoLockup, Reveal, TickerStrip } from "./primitives";
 import logo from "@/assets/logo-mark.png";
 import heroCut from "@/assets/hero-cut.png";
+import heroGate from "@/assets/hero-gate.jpg";
 import collageSelfie from "@/assets/collage-selfie.jpg";
-import collageDark from "@/assets/collage-dark.jpg";
+import collageTravel from "@/assets/collage-travel.jpg";
 import painDocs from "@/assets/pain-docs.jpg";
 import painPhone from "@/assets/pain-phone.jpg";
 import painCarrier from "@/assets/pain-carrier.jpg";
@@ -100,29 +101,36 @@ export function HeroSection() {
         {/* ---------------- right column ---------------- */}
         <div className="relative h-[24rem] sm:h-[30rem] lg:h-[38rem]">
           {/* story card behind */}
-          <div className="absolute top-[4%] left-[2%] h-[86%] w-[66%] rounded-[4px] bg-[#d7d3ce]">
+          <div className="absolute top-[2%] left-[3%] h-[80%] w-[64%] overflow-hidden rounded-[4px] bg-[#d7d3ce]">
+            <img
+              src={heroGate}
+              alt="Avião estacionado no portão de embarque ao amanhecer"
+              width={1728}
+              height={2304}
+              className="h-full w-full object-cover"
+            />
             <StoryChrome />
           </div>
 
           {/* accent ring */}
           <div
             aria-hidden="true"
-            className="border-pv-accent absolute top-[5%] left-[50%] aspect-square w-[80%] -translate-x-1/2 rounded-full border-[14px] lg:border-[18px]"
+            className="border-pv-accent absolute top-[2%] left-[52%] aspect-square w-[78%] -translate-x-1/2 rounded-full border-[14px] lg:border-[18px]"
           />
 
           {/* cut-out subject */}
           <img
             src={heroCut}
-            alt="Veterinária da Pet a Vet ao lado de um golden retriever"
-            width={1165}
-            height={1500}
-            className="absolute bottom-0 left-1/2 z-20 h-[104%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom drop-shadow-[0_30px_60px_rgba(69,34,7,0.18)] lg:left-[10%] lg:translate-x-0"
+            alt="Golden retriever sentado ao lado de uma mala, bolsa de transporte, passaporte e atestado de saúde"
+            width={1595}
+            height={1310}
+            className="absolute bottom-0 left-1/2 z-20 w-[96%] max-w-none -translate-x-1/2 object-contain object-bottom drop-shadow-[0_30px_60px_rgba(69,34,7,0.18)] lg:w-[92%]"
           />
 
           {/* inner rail, mirroring the reference's second column of glyphs */}
           <IconRail
             icons={RAIL_ICONS}
-            className="absolute top-[62%] left-[5%] z-30 hidden -translate-y-1/2 lg:flex"
+            className="absolute top-[44%] left-[4%] z-30 hidden -translate-y-1/2 lg:flex"
           />
         </div>
       </div>
@@ -193,8 +201,8 @@ export function TruthSection() {
               <Phone className="h-2.5 w-2.5 shrink-0 text-white/60" />
             </div>
             <img
-              src={collageDark}
-              alt="Veterinária com um gato no colo"
+              src={collageTravel}
+              alt="Gato sentado dentro de uma mala aberta"
               loading="lazy"
               className="aspect-[3/4] w-full object-cover"
             />

@@ -305,7 +305,10 @@ export function IconRail({
       className={`pointer-events-none flex flex-col items-center gap-[1.6rem] ${className}`}
     >
       {icons.map((Icon, i) => (
-        <Icon key={i} className="text-pv-accent h-[1.05rem] w-[1.05rem]" />
+        <Icon
+          key={i}
+          className="text-pv-accent h-[1.05rem] w-[1.05rem] drop-shadow-[0_1px_3px_rgba(255,253,251,0.85)]"
+        />
       ))}
     </div>
   );

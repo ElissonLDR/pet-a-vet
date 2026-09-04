@@ -13,7 +13,7 @@ import {
 
 import { Cta, DiagonalBands, Eyebrow, LogoLockup, Reveal, Seal, WHATS } from "./primitives";
 import { StoryChrome } from "./sections-top";
-import heroPortrait from "@/assets/hero-vet.jpg";
+import heroPortrait from "@/assets/hero-travel.jpg";
 import depo1 from "@/assets/depo-1.jpg";
 import depo2 from "@/assets/depo-2.jpg";
 import collageSelfie from "@/assets/collage-selfie.jpg";
@@ -336,7 +336,7 @@ export function WhoSection() {
             <figure className="pv-shadow-float relative overflow-hidden rounded-[3px] bg-[#d7d3ce]">
               <img
                 src={heroPortrait}
-                alt="Veterinária da Pet a Vet ao lado de um golden retriever"
+                alt="Golden retriever pronto para viajar ao lado da bagagem e dos documentos"
                 loading="lazy"
                 className="aspect-[3/4] w-full object-cover"
               />
