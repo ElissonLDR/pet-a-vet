@@ -5,17 +5,15 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
+ * Pet a Vet — design system.
+ *
+ * Visual language rebuilt from the reference landing pages: warm cream canvas,
+ * one deep brand tone for the "inverted" bands, one saturated accent used for
+ * display type, buttons and markers. Typography is DM Sans throughout with a
+ * global -3% tracking.
  *
  * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * classes (e.g. --color-pv-accent -> bg-pv-accent, text-pv-accent).
  */
 
 @theme inline {
@@ -59,92 +57,99 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-brand-deep: var(--brand-deep);
-  --color-cream: var(--cream);
-  --font-display: "Fraunces", Georgia, serif;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  /* Pet a Vet brand scale */
+  --color-pv-cream: var(--pv-cream);
+  --color-pv-cream-2: var(--pv-cream-2);
+  --color-pv-cream-3: var(--pv-cream-3);
+  --color-pv-panel: var(--pv-panel);
+  --color-pv-white: var(--pv-white);
+  --color-pv-ink: var(--pv-ink);
+  --color-pv-body: var(--pv-body);
+  --color-pv-muted: var(--pv-muted);
+  --color-pv-accent: var(--pv-accent);
+  --color-pv-accent-soft: var(--pv-accent-soft);
+  --color-pv-gold: var(--pv-gold);
+  --color-pv-deep: var(--pv-deep);
+  --color-pv-deep-2: var(--pv-deep-2);
+  --color-pv-line: var(--pv-line);
+
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --radius: 1rem;
-  --background: oklch(0.985 0.012 85);
-  --foreground: oklch(0.28 0.05 55);
-  --card: oklch(1 0.004 85);
-  --card-foreground: oklch(0.28 0.05 55);
-  --popover: oklch(1 0.004 85);
-  --popover-foreground: oklch(0.28 0.05 55);
-  --primary: oklch(0.68 0.15 58);
-  --primary-foreground: oklch(0.99 0.01 85);
-  --secondary: oklch(0.94 0.03 80);
-  --secondary-foreground: oklch(0.36 0.07 52);
-  --muted: oklch(0.95 0.02 82);
-  --muted-foreground: oklch(0.52 0.05 60);
-  --accent: oklch(0.92 0.05 75);
-  --accent-foreground: oklch(0.36 0.07 52);
+  --radius: 0.5rem;
+
+  /* ---- Pet a Vet palette ---- */
+  --pv-cream: #f5efea; /* page canvas */
+  --pv-cream-2: #f8f3e9; /* warmer band (big type section) */
+  --pv-cream-3: #faf6f2; /* ticker strip / hairline surfaces */
+  --pv-panel: #efe7dd; /* beige chips inside white containers */
+  --pv-white: #fffdfb;
+  --pv-ink: #2c2926; /* headings */
+  --pv-body: #55504b; /* body copy */
+  --pv-muted: #8b837c; /* de-emphasised copy */
+  --pv-accent: #b4551a; /* burnt orange — display type, buttons, markers */
+  --pv-accent-soft: #e8a05a; /* accent on dark backgrounds */
+  --pv-gold: #eb8b2c; /* logo orange */
+  --pv-deep: #452207; /* inverted bands */
+  --pv-deep-2: #5c3010;
+  --pv-line: #e2d8cd;
+
+  /* ---- shadcn tokens mapped onto the brand ---- */
+  --background: var(--pv-cream);
+  --foreground: var(--pv-ink);
+  --card: var(--pv-white);
+  --card-foreground: var(--pv-ink);
+  --popover: var(--pv-white);
+  --popover-foreground: var(--pv-ink);
+  --primary: var(--pv-accent);
+  --primary-foreground: var(--pv-cream-3);
+  --secondary: var(--pv-panel);
+  --secondary-foreground: var(--pv-deep);
+  --muted: var(--pv-panel);
+  --muted-foreground: var(--pv-muted);
+  --accent: var(--pv-panel);
+  --accent-foreground: var(--pv-deep);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.9 0.025 78);
-  --input: oklch(0.9 0.025 78);
-  --ring: oklch(0.68 0.15 58);
-  --brand: oklch(0.71 0.155 60);
-  --brand-foreground: oklch(0.99 0.01 85);
-  --brand-deep: oklch(0.38 0.08 52);
-  --cream: oklch(0.96 0.02 86);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-  --gradient-brand: linear-gradient(135deg, oklch(0.75 0.15 68), oklch(0.62 0.15 48));
-  --gradient-warm: linear-gradient(180deg, oklch(0.985 0.012 85), oklch(0.95 0.03 78));
-  --shadow-soft: 0 18px 40px -22px oklch(0.38 0.08 52 / 0.45);
-  --shadow-lift: 0 28px 60px -30px oklch(0.38 0.08 52 / 0.55);
+  --border: var(--pv-line);
+  --input: var(--pv-line);
+  --ring: var(--pv-accent);
+  --chart-1: #b4551a;
+  --chart-2: #eb8b2c;
+  --chart-3: #452207;
+  --chart-4: #c9a227;
+  --chart-5: #8b837c;
+  --sidebar: var(--pv-cream-3);
+  --sidebar-foreground: var(--pv-ink);
+  --sidebar-primary: var(--pv-accent);
+  --sidebar-primary-foreground: var(--pv-cream-3);
+  --sidebar-accent: var(--pv-panel);
+  --sidebar-accent-foreground: var(--pv-deep);
+  --sidebar-border: var(--pv-line);
+  --sidebar-ring: var(--pv-accent);
 }
 
-
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: var(--pv-deep);
+  --foreground: var(--pv-cream);
+  --card: var(--pv-deep-2);
+  --card-foreground: var(--pv-cream);
+  --popover: var(--pv-deep-2);
+  --popover-foreground: var(--pv-cream);
+  --primary: var(--pv-accent-soft);
+  --primary-foreground: var(--pv-deep);
+  --secondary: var(--pv-deep-2);
+  --secondary-foreground: var(--pv-cream);
+  --muted: var(--pv-deep-2);
+  --muted-foreground: #c3b3a4;
+  --accent: var(--pv-deep-2);
+  --accent-foreground: var(--pv-cream);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: var(--pv-accent-soft);
 }
 
 @layer base {
@@ -152,33 +157,147 @@
     border-color: var(--color-border);
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    /* Global -3% tracking, per the type spec. */
+    letter-spacing: -0.03em;
+    font-feature-settings: "kern" 1;
   }
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+
+  ::selection {
+    background: var(--pv-accent);
+    color: var(--pv-cream-3);
   }
 }
 
-@utility bg-gradient-brand {
-  background-image: var(--gradient-brand);
+/* ---------------------------------------------------------------- *
+ * Section eyebrow — "// LABEL"
+ * ---------------------------------------------------------------- */
+@utility pv-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--pv-accent);
 }
 
-@utility bg-gradient-warm {
-  background-image: var(--gradient-warm);
+/* ---------------------------------------------------------------- *
+ * Marquees
+ * ---------------------------------------------------------------- */
+@keyframes pv-scroll-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
-@utility shadow-soft {
-  box-shadow: var(--shadow-soft);
+@keyframes pv-scroll-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-@utility shadow-lift {
-  box-shadow: var(--shadow-lift);
+@utility pv-track-left {
+  display: flex;
+  width: max-content;
+  animation: pv-scroll-left var(--pv-duration, 40s) linear infinite;
 }
 
+@utility pv-track-right {
+  display: flex;
+  width: max-content;
+  animation: pv-scroll-right var(--pv-duration, 40s) linear infinite;
+}
+
+/* ---------------------------------------------------------------- *
+ * Scroll reveal
+ * ---------------------------------------------------------------- */
+@utility pv-reveal {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--pv-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+@utility pv-reveal-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ---------------------------------------------------------------- *
+ * Misc helpers
+ * ---------------------------------------------------------------- */
+@utility pv-no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Mirrored reflection used under the oversized display word + cut-outs. */
+@utility pv-mirror {
+  transform: scaleY(-1);
+  /* The element is flipped, so its own bottom edge renders at the seam. */
+  -webkit-mask-image: linear-gradient(to top, rgb(0 0 0 / 0.4), transparent 70%);
+  mask-image: linear-gradient(to top, rgb(0 0 0 / 0.4), transparent 70%);
+  pointer-events: none;
+}
+
+/* Underline stroke drawn under the emphasised words in the quote card. */
+@utility pv-underline {
+  background-image: linear-gradient(var(--pv-accent), var(--pv-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 2px;
+  padding-bottom: 2px;
+}
+
+@utility pv-shadow-card {
+  box-shadow:
+    0 1px 2px rgb(69 34 7 / 0.04),
+    0 18px 44px -26px rgb(69 34 7 / 0.28);
+}
+
+@utility pv-shadow-float {
+  box-shadow:
+    0 2px 6px rgb(69 34 7 / 0.06),
+    0 34px 70px -30px rgb(69 34 7 / 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pv-track-left,
+  .pv-track-right {
+    animation: none;
+  }
+  .pv-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
