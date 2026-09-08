@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -11,7 +11,17 @@ import {
   Video,
 } from "lucide-react";
 
-import { Cta, DiagonalBands, Eyebrow, LogoLockup, Reveal, Seal, WHATS } from "./primitives";
+import {
+  CarouselArrows,
+  Cta,
+  DiagonalBands,
+  Eyebrow,
+  LogoLockup,
+  Reveal,
+  Seal,
+  useCarousel,
+  WHATS,
+} from "./primitives";
 import { StoryChrome } from "./sections-top";
 import heroPortrait from "@/assets/hero-travel.jpg";
 import depo1 from "@/assets/depo-1.jpg";
@@ -90,7 +100,7 @@ export function PlanSection() {
                   href={WHATS}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-pv-accent text-pv-cream-3 hover:bg-pv-deep mt-7 flex w-full items-center justify-center gap-2.5 rounded-[3px] px-6 py-[1.15rem] text-[0.7rem] font-medium tracking-[0.11em] uppercase transition-colors duration-300"
+                  className="bg-pv-accent text-pv-cream-3 hover:bg-pv-deep mt-7 flex w-full items-center justify-center gap-2.5 rounded-[3px] px-6 py-[1.25rem] text-center text-[0.95rem] font-medium tracking-[0.09em] uppercase transition-colors duration-300"
                 >
                   Quero falar com a Pet a Vet
                   <ArrowUpRight className="h-[0.95rem] w-[0.95rem]" />
@@ -194,14 +204,7 @@ function ChatCard({ t }: { t: (typeof THREADS)[number] }) {
 }
 
 export function TestimonialsSection() {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    // Start centred so the row bleeds off both edges, as in the reference.
-    el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
-  }, []);
+  const { trackRef, atStart, atEnd, step } = useCarousel();
 
   return (
     <section className="bg-pv-cream relative overflow-hidden pt-14 lg:pt-16">
@@ -213,8 +216,8 @@ export function TestimonialsSection() {
               Tutores que já viajaram com a Pet a Vet
             </h2>
           </div>
-          <div className="flex items-center gap-3" aria-hidden="true">
-            <div className="flex -space-x-3">
+          <div className="flex items-center gap-4">
+            <div className="flex -space-x-3" aria-hidden="true">
               {[depo1, collageSelfie, depo2].map((src, i) => (
                 <span
                   key={i}
@@ -224,9 +227,13 @@ export function TestimonialsSection() {
                 </span>
               ))}
             </div>
-            <span className="bg-pv-accent text-pv-cream-3 grid h-11 w-11 place-items-center rounded-full">
-              <ArrowDownLeft className="h-4 w-4" />
-            </span>
+            <CarouselArrows
+              onPrev={() => step(-1)}
+              onNext={() => step(1)}
+              atStart={atStart}
+              atEnd={atEnd}
+              label="carrossel de depoimentos"
+            />
           </div>
         </Reveal>
       </div>

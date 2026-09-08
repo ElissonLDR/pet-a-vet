@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MessageCircle } from "lucide-react";
 
-import { WHATS } from "@/components/landing/primitives";
+import { EdgeFilters, WHATS } from "@/components/landing/primitives";
 import { HeroSection, PainSection, TruthSection } from "@/components/landing/sections-top";
 import {
   BigTypeSection,
@@ -41,6 +41,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="bg-pv-cream min-h-screen overflow-x-hidden">
+      <EdgeFilters />
       <HeroSection />
       <TruthSection />
       <PainSection />

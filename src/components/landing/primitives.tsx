@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { LogIn } from "lucide-react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { ChevronLeft, ChevronRight, LogIn } from "lucide-react";
 import logo from "@/assets/logo-mark.png";
 import logoCream from "@/assets/logo-cream.png";
 
@@ -8,6 +8,28 @@ export const WHATS =
   encodeURIComponent(
     "Olá! Vim pelo site e preciso de ajuda com o CVI/documentação para viajar com meu pet. Meu destino é ______ e a data da viagem é ______. Podem me orientar?",
   );
+
+/* ------------------------------------------------------------------ *
+ * Cut-out edge softener
+ *
+ * Background removal leaves a hard, slightly haloed 1px edge that reads as
+ * a sticker pasted on the page. Blurring the alpha channel and then pulling
+ * the ramp back in eats that halo and leaves a soft contour instead.
+ * Rendered once, near the top of the page, and referenced by `filter:`.
+ * ------------------------------------------------------------------ */
+export function EdgeFilters() {
+  return (
+    <svg aria-hidden="true" focusable="false" className="pointer-events-none absolute h-0 w-0">
+      <filter id="pv-soft-edge" x="-4%" y="-4%" width="108%" height="108%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="soft" />
+        <feComponentTransfer in="soft" result="tightened">
+          <feFuncA type="linear" slope="1.7" intercept="-0.42" />
+        </feComponentTransfer>
+        <feComposite in="SourceGraphic" in2="tightened" operator="in" />
+      </filter>
+    </svg>
+  );
+}
 
 /* ------------------------------------------------------------------ *
  * Scroll reveal
@@ -99,17 +121,112 @@ export function Cta({
     tone === "accent"
       ? "bg-pv-accent text-pv-cream-3 hover:bg-pv-deep"
       : "bg-pv-cream-3 text-pv-accent hover:bg-white";
-  const pad = size === "lg" ? "px-11 py-[1.35rem]" : "px-10 py-[1.15rem]";
+  /*
+   * The label is 4px larger than it used to be, so the horizontal padding is
+   * relaxed on small screens — at the old px-11 the longest CTA no longer fit
+   * a 360px viewport without wrapping mid-word.
+   */
+  const pad =
+    size === "lg" ? "px-6 py-[1.25rem] sm:px-11 sm:py-[1.35rem]" : "px-6 py-[1.05rem] sm:px-10";
   return (
     <a
       href={WHATS}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex items-center justify-center gap-2.5 rounded-[3px] text-[0.7rem] font-medium tracking-[0.11em] uppercase transition-colors duration-300 ${palette} ${pad} ${className}`}
+      className={`group inline-flex items-center justify-center gap-2.5 rounded-[3px] text-center text-[0.95rem] font-medium tracking-[0.09em] uppercase transition-colors duration-300 ${palette} ${pad} ${className}`}
     >
       {children}
-      <LogIn className="h-[0.95rem] w-[0.95rem] transition-transform duration-300 group-hover:translate-x-1" />
+      <LogIn className="h-[1.05rem] w-[1.05rem] shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
     </a>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Edge-to-edge carousel: scroll state + one-card-at-a-time stepping
+ * ------------------------------------------------------------------ */
+export function useCarousel(pages = 3) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(Math.floor(pages / 2));
+  const [atStart, setAtStart] = useState(false);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const sync = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    const ratio = max > 0 ? el.scrollLeft / max : 0;
+    setPage(Math.min(pages - 1, Math.round(ratio * (pages - 1))));
+    setAtStart(el.scrollLeft <= 2);
+    setAtEnd(max <= 0 || el.scrollLeft >= max - 2);
+  }, [pages]);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    // Start centred so the row bleeds off both edges, as in the reference.
+    el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+    sync();
+    el.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    return () => {
+      el.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, [sync]);
+
+  /* Steps by one card so the row always lands on a card edge. */
+  const step = useCallback((dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const first = el.firstElementChild as HTMLElement | null;
+    const gap = first?.nextElementSibling
+      ? (first.nextElementSibling as HTMLElement).offsetLeft - first.offsetLeft - first.offsetWidth
+      : 16;
+    const distance = first ? first.offsetWidth + gap : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * distance, behavior: "smooth" });
+  }, []);
+
+  return { trackRef, page, atStart, atEnd, step };
+}
+
+export function CarouselArrows({
+  onPrev,
+  onNext,
+  atStart,
+  atEnd,
+  className = "",
+  label = "carrossel",
+}: {
+  onPrev: () => void;
+  onNext: () => void;
+  atStart: boolean;
+  atEnd: boolean;
+  className?: string;
+  label?: string;
+}) {
+  const base =
+    "border-pv-accent/45 text-pv-accent hover:bg-pv-accent hover:text-pv-cream-3 grid h-11 w-11 place-items-center rounded-full border transition-colors duration-300 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-pv-accent";
+  return (
+    <div className={`flex items-center gap-2 ${className}`}>
+      <button
+        type="button"
+        onClick={onPrev}
+        disabled={atStart}
+        aria-label={`Voltar no ${label}`}
+        className={base}
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        onClick={onNext}
+        disabled={atEnd}
+        aria-label={`Avançar no ${label}`}
+        className={base}
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+    </div>
   );
 }
 

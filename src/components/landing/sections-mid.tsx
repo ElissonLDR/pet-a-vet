@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import {
   ArrowDownLeft,
   Check,
@@ -10,7 +10,16 @@ import {
   Syringe,
 } from "lucide-react";
 
-import { Cta, DiagonalBands, Eyebrow, IconRail, Reveal, Seal } from "./primitives";
+import {
+  CarouselArrows,
+  Cta,
+  DiagonalBands,
+  Eyebrow,
+  IconRail,
+  Reveal,
+  Seal,
+  useCarousel,
+} from "./primitives";
 import bentoExam from "@/assets/bento-exam.jpg";
 import bentoChip from "@/assets/bento-chip.jpg";
 import bigtypeCut from "@/assets/bigtype-cut.png";
@@ -196,16 +205,17 @@ export function BigTypeSection() {
             alt="Golden retriever de mochila entre uma mala com um gato de óculos escuros em cima e uma pilha de bagagens com bolsa de transporte e passaporte"
             width={1250}
             height={786}
-            className="absolute bottom-0 left-1/2 h-[76%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom drop-shadow-[0_16px_26px_rgba(69,34,7,0.12)]"
+            className="absolute bottom-0 left-1/2 h-[76%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom [filter:url(#pv-soft-edge)_drop-shadow(0_16px_26px_rgba(69,34,7,0.12))]"
           />
         </div>
 
         {/*
           Floor reflection: only the cut-out is mirrored, and only for a few rem
           below the seam. Mirroring the whole stage repeated the word a second
-          time and read as a rendering glitch.
+          time and read as a rendering glitch. pv-fade-down keeps the clipped
+          bottom from ending on a hard straight line.
         */}
-        <div className="relative -mt-px h-[clamp(2.5rem,5.5vw,5rem)] overflow-hidden">
+        <div className="pv-fade-down relative -mt-px h-[clamp(2.5rem,5.5vw,5rem)] overflow-hidden">
           <img
             src={bigtypeCut}
             alt=""
@@ -328,26 +338,8 @@ const INCLUDED = [
 ];
 
 export function IncludedSection() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [page, setPage] = useState(1);
   const pages = 3;
-
-  const onScroll = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    const ratio = max > 0 ? el.scrollLeft / max : 0;
-    setPage(Math.min(pages - 1, Math.round(ratio * (pages - 1))));
-  }, []);
-
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    // Start centred so the row bleeds off both edges, as in the reference.
-    el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [onScroll]);
+  const { trackRef, page, atStart, atEnd, step } = useCarousel(pages);
 
   return (
     <section className="bg-pv-cream overflow-hidden py-14 lg:py-16">
@@ -388,15 +380,24 @@ export function IncludedSection() {
         </div>
       </Reveal>
 
-      <div className="mt-7 flex items-center justify-center gap-1.5" aria-hidden="true">
-        {Array.from({ length: pages }, (_, i) => (
-          <span
-            key={i}
-            className={`h-[3px] rounded-full transition-all duration-300 ${
-              i === page ? "bg-pv-accent w-6" : "bg-pv-accent/25 w-[3px]"
-            }`}
-          />
-        ))}
+      <div className="mt-7 flex items-center justify-center gap-6">
+        <CarouselArrows
+          onPrev={() => step(-1)}
+          onNext={() => step(1)}
+          atStart={atStart}
+          atEnd={atEnd}
+          label="carrossel do que você recebe"
+        />
+        <div className="flex items-center gap-1.5" aria-hidden="true">
+          {Array.from({ length: pages }, (_, i) => (
+            <span
+              key={i}
+              className={`h-[3px] rounded-full transition-all duration-300 ${
+                i === page ? "bg-pv-accent w-6" : "bg-pv-accent/25 w-[3px]"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       <Reveal delay={120} className="mt-10 flex justify-center px-6">

@@ -351,6 +351,13 @@
   }
 }
 
+/* Fades a clipped block out towards its bottom edge, so an `overflow-hidden`
+ * container stops the content with a gradient instead of a hard straight cut. */
+@utility pv-fade-down {
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.35) 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.35) 55%, transparent 100%);
+}
+
 /* Mirrored reflection used under the oversized display word + cut-outs. */
 @utility pv-mirror {
   transform: scaleY(-1);

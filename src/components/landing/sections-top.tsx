@@ -136,7 +136,7 @@ export function HeroSection() {
             alt="Golden retriever de chapéu de palha e óculos escuros sentado ao lado de uma mala, com um gato dentro da bolsa de transporte, passaporte e atestado de saúde"
             width={1872}
             height={1248}
-            className="absolute bottom-[2%] left-1/2 z-20 w-[104%] max-w-none -translate-x-1/2 object-contain object-bottom drop-shadow-[0_24px_40px_rgba(69,34,7,0.16)] lg:w-[100%]"
+            className="absolute bottom-[2%] left-1/2 z-20 w-[104%] max-w-none -translate-x-1/2 object-contain object-bottom [filter:url(#pv-soft-edge)_drop-shadow(0_24px_40px_rgba(69,34,7,0.16))] lg:w-[100%]"
           />
 
           {/* floating glass tags */}
