@@ -126,10 +126,10 @@ export function TickerStrip({ items, duration = 46 }: { items: string[]; duratio
       >
         {doubled.map((t, i) => (
           <div key={`${t}-${i}`} className="flex shrink-0 items-center">
-            <span className="text-pv-body px-14 py-[0.95rem] text-[0.78rem] whitespace-nowrap">
+            <span className="text-pv-body px-14 py-[0.95rem] text-[0.97rem] whitespace-nowrap">
               {t}
             </span>
-            <span className="bg-pv-line h-4 w-px shrink-0" />
+            <span className="bg-pv-sky/70 h-4 w-px shrink-0" />
           </div>
         ))}
       </div>
@@ -170,51 +170,57 @@ function DottedSeal({ className = "" }: { className?: string }) {
 }
 
 /* ------------------------------------------------------------------ *
- * Two overlapping tilted bands crossing the page
+ * Two tilted bands crossing the page in an X
+ *
+ * The back band leans one way in the logo cyan, the front band leans the
+ * other way in the deep brown, so they read as two ribbons crossing rather
+ * than as one thick stripe.
  * ------------------------------------------------------------------ */
-export function DiagonalBands({
-  text,
-  className = "",
-}: {
-  text: string;
-  className?: string;
-}) {
+export function DiagonalBands({ text, className = "" }: { text: string; className?: string }) {
   const row = Array.from({ length: 12 }, (_, i) => i);
   const Band = ({
     dir,
     duration,
+    tone,
   }: {
     dir: "left" | "right";
     duration: number;
+    tone: "front" | "back";
   }) => (
-    <div className="bg-pv-deep text-pv-cream w-full overflow-hidden py-[0.8rem]">
+    <div
+      className={`w-full overflow-hidden py-[0.8rem] ${
+        tone === "front" ? "bg-pv-deep text-pv-cream" : "bg-pv-sky-deep text-pv-sky-soft"
+      }`}
+    >
       <div
         className={dir === "left" ? "pv-track-left" : "pv-track-right"}
         style={{ "--pv-duration": `${duration}s` } as React.CSSProperties}
       >
         {[...row, ...row].map((i, n) => (
           <div key={n} className="flex shrink-0 items-center gap-10 pr-10">
-            <span className="text-[0.82rem] whitespace-nowrap opacity-95">{text}</span>
-            <DottedSeal className="text-pv-cream" />
+            <span className="text-[1.01rem] whitespace-nowrap opacity-95">{text}</span>
+            <DottedSeal className={tone === "front" ? "text-pv-sky" : "text-pv-sky-soft"} />
           </div>
         ))}
       </div>
     </div>
   );
 
+  /*
+   * Both bands are absolutely centred on the same axis so they overlap at the
+   * middle of the page. 150% wide keeps the rotated ends past the viewport,
+   * and the container is tall enough to hold the vertical travel of the tilt.
+   */
   return (
     <div
-      className={`pointer-events-none relative w-full overflow-hidden select-none ${className}`}
+      className={`pointer-events-none relative h-[10.5rem] w-full overflow-hidden select-none sm:h-[12rem] ${className}`}
       aria-hidden="true"
     >
-      {/* Bands are 150% wide and centred so the rotation never exposes a corner. */}
-      <div className="flex flex-col">
-        <div className="-ml-[25%] w-[150%] origin-center -rotate-[1.1deg]">
-          <Band dir="left" duration={38} />
-        </div>
-        <div className="-mt-[0.35rem] -ml-[25%] w-[150%] origin-center -rotate-[1.9deg]">
-          <Band dir="right" duration={46} />
-        </div>
+      <div className="absolute top-1/2 left-[-25%] w-[150%] origin-center -translate-y-1/2 rotate-[2.6deg]">
+        <Band dir="right" duration={46} tone="back" />
+      </div>
+      <div className="absolute top-1/2 left-[-25%] w-[150%] origin-center -translate-y-1/2 -rotate-[2.6deg]">
+        <Band dir="left" duration={38} tone="front" />
       </div>
     </div>
   );
@@ -256,7 +262,7 @@ export function Seal({ className = "" }: { className?: string }) {
           strokeLinecap="round"
           opacity="0.55"
         />
-        <circle cx="100" cy="100" r="88" fill="none" stroke="var(--pv-line)" strokeWidth="1" />
+        <circle cx="100" cy="100" r="88" fill="none" stroke="var(--pv-sky)" strokeWidth="1.4" />
         <text
           fill="var(--pv-accent)"
           fontSize="12"
@@ -295,19 +301,23 @@ export function Seal({ className = "" }: { className?: string }) {
 export function IconRail({
   icons,
   className = "",
+  tone = "cool",
 }: {
   icons: React.ComponentType<{ className?: string }>[];
   className?: string;
+  tone?: "cool" | "warm";
 }) {
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none flex flex-col items-center gap-[1.6rem] ${className}`}
+      className={`pointer-events-none flex flex-col items-center gap-[1.35rem] rounded-full px-[0.7rem] py-[1.1rem] ${
+        tone === "warm" ? "pv-glass-warm" : "pv-glass"
+      } ${className}`}
     >
       {icons.map((Icon, i) => (
         <Icon
           key={i}
-          className="text-pv-accent h-[1.05rem] w-[1.05rem] drop-shadow-[0_1px_3px_rgba(255,253,251,0.85)]"
+          className="text-pv-accent h-[1.05rem] w-[1.05rem] drop-shadow-[0_1px_2px_rgba(255,253,251,0.9)]"
         />
       ))}
     </div>

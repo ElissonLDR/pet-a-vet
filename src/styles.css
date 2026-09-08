@@ -73,6 +73,9 @@
   --color-pv-deep: var(--pv-deep);
   --color-pv-deep-2: var(--pv-deep-2);
   --color-pv-line: var(--pv-line);
+  --color-pv-sky: var(--pv-sky);
+  --color-pv-sky-deep: var(--pv-sky-deep);
+  --color-pv-sky-soft: var(--pv-sky-soft);
 
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "DM Sans", ui-sans-serif, system-ui, sans-serif;
@@ -96,6 +99,13 @@
   --pv-deep: #452207; /* inverted bands */
   --pv-deep-2: #5c3010;
   --pv-line: #e2d8cd;
+
+  /* Secondary brand tone — the cyan taken from the logo mark (#7cd4e4).
+     `sky` is the literal logo value (fills, rings, markers on dark), while
+     `sky-deep` is the darkened variant that keeps text legible on cream. */
+  --pv-sky: #7cd4e4;
+  --pv-sky-deep: #2b8095;
+  --pv-sky-soft: #e2f4f8;
 
   /* ---- shadcn tokens mapped onto the brand ---- */
   --background: var(--pv-cream);
@@ -191,7 +201,7 @@
  * Section eyebrow — "// LABEL"
  * ---------------------------------------------------------------- */
 @utility pv-eyebrow {
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -247,6 +257,71 @@
 @utility pv-reveal-in {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+/* ---------------------------------------------------------------- *
+ * Liquid glass — frosted pill behind the floating icon rails.
+ *
+ * The highlight is drawn with two inset shadows (top rim + bottom bounce)
+ * over a translucent vertical gradient, so the pill picks up whatever sits
+ * behind it instead of reading as a flat grey block.
+ * ---------------------------------------------------------------- */
+@utility pv-glass {
+  background: linear-gradient(
+    150deg,
+    rgb(255 255 255 / 0.62) 0%,
+    rgb(255 255 255 / 0.28) 46%,
+    rgb(124 212 228 / 0.16) 100%
+  );
+  backdrop-filter: blur(16px) saturate(1.7);
+  -webkit-backdrop-filter: blur(16px) saturate(1.7);
+  border: 1px solid rgb(255 255 255 / 0.6);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.85),
+    inset 0 -8px 14px -10px rgb(124 212 228 / 0.55),
+    0 12px 34px -18px rgb(69 34 7 / 0.4);
+}
+
+/* Same treatment tuned for the cream-2 band, where the surface is warmer. */
+@utility pv-glass-warm {
+  background: linear-gradient(
+    150deg,
+    rgb(255 253 251 / 0.72) 0%,
+    rgb(255 253 251 / 0.3) 48%,
+    rgb(124 212 228 / 0.18) 100%
+  );
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid rgb(255 255 255 / 0.65);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    inset 0 -8px 14px -10px rgb(124 212 228 / 0.5),
+    0 12px 34px -18px rgb(69 34 7 / 0.35);
+}
+
+/* ---------------------------------------------------------------- *
+ * Horizontal edge fade — used by the static "A gente orienta." line,
+ * where the repeats blur out towards both edges instead of scrolling.
+ * ---------------------------------------------------------------- */
+@utility pv-edge-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 0.55) 12%,
+    black 34%,
+    black 66%,
+    rgb(0 0 0 / 0.55) 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 0.55) 12%,
+    black 34%,
+    black 66%,
+    rgb(0 0 0 / 0.55) 88%,
+    transparent 100%
+  );
 }
 
 /* ---------------------------------------------------------------- *

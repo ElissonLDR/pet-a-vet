@@ -58,7 +58,7 @@ export function PlanSection() {
                       <span className="bg-pv-accent grid h-[1.15rem] w-[1.15rem] shrink-0 place-items-center rounded-full">
                         <Check className="h-2.5 w-2.5 text-white" strokeWidth={3.5} />
                       </span>
-                      <span className="text-pv-ink text-[0.82rem]">{o}</span>
+                      <span className="text-pv-ink text-[1.01rem]">{o}</span>
                     </li>
                   ))}
                 </ul>
@@ -82,7 +82,7 @@ export function PlanSection() {
                   <p className="text-pv-ink pb-3 text-[clamp(0.85rem,1.5vw,1.15rem)]">dias</p>
                 </div>
 
-                <p className="border-pv-line text-pv-ink mx-auto mt-6 inline-block rounded-full border px-6 py-2.5 text-[0.8rem]">
+                <p className="border-pv-line text-pv-ink mx-auto mt-6 inline-block rounded-full border px-6 py-2.5 text-[0.99rem]">
                   Ou o quanto antes <strong className="font-semibold">for possível</strong>
                 </p>
 
@@ -96,18 +96,18 @@ export function PlanSection() {
                   <ArrowUpRight className="h-[0.95rem] w-[0.95rem]" />
                 </a>
 
-                <p className="text-pv-ink mt-5 flex items-center justify-center gap-2 text-[0.75rem]">
+                <p className="text-pv-ink mt-5 flex items-center justify-center gap-2 text-[0.94rem]">
                   <CalendarCheck className="text-pv-accent h-3.5 w-3.5" />
                   Agenda com <strong className="font-semibold">horário marcado</strong>
                 </p>
 
-                <div className="text-pv-body mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[0.7rem]">
+                <div className="text-pv-body mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[0.89rem]">
                   <span className="flex items-center gap-1.5">
-                    <CalendarDays className="text-pv-accent h-3 w-3" />
+                    <CalendarDays className="text-pv-sky-deep h-3.5 w-3.5" />
                     Seg a Sex — 8h às 19h
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <MapPin className="text-pv-accent h-3 w-3" />
+                    <MapPin className="text-pv-sky-deep h-3.5 w-3.5" />
                     Vila Madalena — São Paulo
                   </span>
                 </div>
@@ -165,7 +165,6 @@ const THREADS = [
     ],
   },
 ];
-
 
 function ChatCard({ t }: { t: (typeof THREADS)[number] }) {
   return (
@@ -233,10 +232,7 @@ export function TestimonialsSection() {
       </div>
 
       <Reveal delay={80}>
-        <div
-          ref={trackRef}
-          className="pv-no-scrollbar mt-11 flex gap-3 overflow-x-auto px-6 pb-1"
-        >
+        <div ref={trackRef} className="pv-no-scrollbar mt-11 flex gap-3 overflow-x-auto px-6 pb-1">
           {THREADS.map((t) => (
             <ChatCard key={t.name} t={t} />
           ))}
@@ -258,8 +254,8 @@ export function TestimonialsSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
                 <figcaption className="absolute inset-x-3 bottom-3 text-center">
-                  <p className="text-[0.7rem] font-medium text-white drop-shadow">{p.name}</p>
-                  <p className="bg-pv-deep/85 text-pv-cream mt-1 inline-block rounded-[2px] px-2 py-1 text-[0.5rem]">
+                  <p className="text-[0.89rem] font-medium text-white drop-shadow">{p.name}</p>
+                  <p className="bg-pv-deep/85 text-pv-cream mt-1 inline-block rounded-[2px] px-2 py-1 text-[0.69rem]">
                     {p.role}
                   </p>
                 </figcaption>
@@ -303,21 +299,21 @@ export function WhoSection() {
           <Reveal className="bg-pv-deep text-pv-cream relative z-10 px-8 py-12 sm:px-12 lg:px-14 lg:py-16">
             <Eyebrow tone="soft">Um pouco sobre nós</Eyebrow>
             <h2 className="mt-5 text-[clamp(1.6rem,3vw,2.5rem)]">Quem somos nós</h2>
-            <p className="mt-6 max-w-[30rem] text-[0.83rem] leading-[1.75] opacity-90">
-              A Pet a Vet é uma clínica veterinária na Vila Madalena que acompanha tutores durante
-              a preparação dos seus pets para viagens internacionais — da primeira avaliação até a
+            <p className="mt-6 max-w-[30rem] text-[1.02rem] leading-[1.7] opacity-90">
+              A Pet a Vet é uma clínica veterinária na Vila Madalena que acompanha tutores durante a
+              preparação dos seus pets para viagens internacionais — da primeira avaliação até a
               orientação para a emissão do Certificado Veterinário Internacional.
             </p>
-            <p className="mt-5 max-w-[30rem] text-[0.83rem] leading-[1.75] opacity-90">
-              O que nos move é simples: cuidar bem do animal e tirar o peso da burocracia do colo
-              do tutor. Sem promessas irreais, sem achismo — apenas orientação veterinária clara
-              sobre o que cada destino exige.
+            <p className="mt-5 max-w-[30rem] text-[1.02rem] leading-[1.7] opacity-90">
+              O que nos move é simples: cuidar bem do animal e tirar o peso da burocracia do colo do
+              tutor. Sem promessas irreais, sem achismo — apenas orientação veterinária clara sobre
+              o que cada destino exige.
             </p>
 
             <div className="mt-12 flex flex-wrap gap-x-14 gap-y-8">
               <div>
                 <p className="text-[clamp(2.6rem,5.5vw,4rem)] leading-[0.9] font-normal">+7</p>
-                <p className="mt-3 max-w-[9rem] text-[0.68rem] leading-[1.5] opacity-80">
+                <p className="mt-3 max-w-[9rem] text-[0.87rem] leading-[1.5] opacity-80">
                   Etapas veterinárias
                   <br />
                   resolvidas no mesmo lugar
@@ -325,7 +321,7 @@ export function WhoSection() {
               </div>
               <div>
                 <p className="text-[clamp(2.6rem,5.5vw,4rem)] leading-[0.9] font-normal">100%</p>
-                <p className="mt-3 max-w-[11rem] text-[0.68rem] leading-[1.5] opacity-80">
+                <p className="mt-3 max-w-[11rem] text-[0.87rem] leading-[1.5] opacity-80">
                   Acompanhamento veterinário do início ao embarque
                 </p>
               </div>
@@ -419,7 +415,7 @@ export function FaqSection() {
                       className={`grid h-8 w-8 shrink-0 place-items-center rounded-[4px] transition-colors duration-300 ${
                         isOpen
                           ? "bg-pv-accent text-pv-cream-3"
-                          : "border-pv-ink/25 text-pv-ink border"
+                          : "border-pv-sky text-pv-sky-deep bg-pv-sky-soft/60 border"
                       }`}
                     >
                       {isOpen ? (
@@ -435,7 +431,7 @@ export function FaqSection() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="text-pv-body px-6 pb-5 text-[0.78rem] leading-[1.65] sm:px-7">
+                      <p className="text-pv-body px-6 pb-5 text-[0.97rem] leading-[1.65] sm:px-7">
                         {f.a}
                       </p>
                     </div>
@@ -446,11 +442,11 @@ export function FaqSection() {
           })}
         </div>
 
-        <div className="bg-pv-cream/25 mt-16 h-px w-full" />
+        <div className="bg-pv-sky/35 mt-16 h-px w-full" />
 
         <footer className="text-pv-cream mt-8 flex flex-col items-center justify-between gap-6 sm:flex-row">
           <LogoLockup invert height="h-11" />
-          <div className="text-center text-[0.68rem] leading-[1.7] opacity-80 sm:text-right">
+          <div className="text-center text-[0.87rem] leading-[1.7] opacity-80 sm:text-right">
             <p>Pet a Vet — cuidado veterinário na Vila Madalena, São Paulo</p>
             <p>
               © 2026 · <strong className="font-semibold">Pet a Vet</strong> · Todos os direitos

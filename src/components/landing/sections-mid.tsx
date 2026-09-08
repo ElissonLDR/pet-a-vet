@@ -28,11 +28,10 @@ const RAIL_ICONS = [PawPrint, Syringe, ScanLine, FileText, Plane];
  * ================================================================== */
 export function IntroSection() {
   const phrase = "A gente orienta.";
-  const tones = ["text-pv-muted/45", "text-pv-ink font-medium", "text-pv-accent font-medium"];
 
   return (
     <>
-      <DiagonalBands text="Não sabe quais documentos o seu pet precisa" className="py-14" />
+      <DiagonalBands text="Não sabe quais documentos o seu pet precisa" className="my-10" />
 
       <section className="bg-pv-cream py-14 lg:py-20">
         <div className="mx-auto max-w-[1180px] px-6 sm:px-10 lg:px-14">
@@ -53,24 +52,24 @@ export function IntroSection() {
 
           {/* bento */}
           <Reveal delay={80} className="mt-12 grid gap-1.5 sm:grid-cols-2">
-            {/* 1 — white card with running line */}
+            {/*
+              1 — white card with the repeated phrase.
+
+              Static, not a marquee: the middle repeat is sharp and the ones
+              either side blur out, so the eye lands on the readable one.
+            */}
             <div className="bg-pv-white flex aspect-[346/128] flex-col items-center justify-center overflow-hidden rounded-[2px]">
-              <p className="text-pv-ink px-4 text-center text-[0.78rem]">
+              <p className="text-pv-ink px-4 text-center text-[0.97rem]">
                 Aqui você <strong className="font-semibold">não pesquisa sozinho.</strong>
               </p>
-              <div className="mt-3 w-full overflow-hidden">
-                <div
-                  className="pv-track-left"
-                  style={{ "--pv-duration": "22s" } as React.CSSProperties}
-                >
-                  {Array.from({ length: 12 }, (_, i) => (
-                    <span
-                      key={i}
-                      className={`shrink-0 pr-4 text-[clamp(1.15rem,2.3vw,1.9rem)] leading-none whitespace-nowrap ${tones[i % 3]}`}
-                    >
-                      {phrase}
-                    </span>
-                  ))}
+              <div className="pv-edge-fade mt-3 w-full overflow-hidden">
+                <div className="flex items-baseline justify-center text-[clamp(1.15rem,2.3vw,1.9rem)] leading-none whitespace-nowrap">
+                  <span className="text-pv-muted/35 shrink-0 pr-5 blur-[2.5px]">{phrase}</span>
+                  <span className="shrink-0 pr-5">
+                    <span className="text-pv-ink">A gente </span>
+                    <span className="text-pv-accent font-medium">orienta.</span>
+                  </span>
+                  <span className="text-pv-muted/35 shrink-0 blur-[2.5px]">{phrase}</span>
                 </div>
               </div>
             </div>
@@ -102,7 +101,7 @@ export function IntroSection() {
                 <br />
                 Sem improviso.
               </p>
-              <p className="mt-3 text-[0.72rem] opacity-80">
+              <p className="mt-3 text-[0.91rem] opacity-80">
                 Apenas o que o destino do seu pet realmente exige.
               </p>
             </div>
@@ -148,42 +147,18 @@ const OUTCOMES: { title: ReactNode }[] = [
 ];
 
 /*
- * leading-[0.78] puts the glyph baseline within ~2% of the line box edge, so the
- * mirrored copy underneath meets the real word seamlessly — the reflection the
- * reference draws under its display word.
+ * The word is sized to fit the viewport (18vw x 9 glyphs) instead of bleeding
+ * off both edges — "ET A VE" read as a mistake rather than as a crop.
  */
 const DISPLAY_WORD =
-  "block text-[clamp(4.2rem,26.5vw,24rem)] leading-[0.78] font-medium tracking-[-0.045em] whitespace-nowrap text-pv-accent";
-
-function BigTypeStage({ mirrored = false }: { mirrored?: boolean }) {
-  return (
-    <div className="relative h-[clamp(15rem,40vw,36rem)] w-full overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="absolute top-[10%] left-1/2 w-max -translate-x-1/2"
-      >
-        <span className={DISPLAY_WORD}>PET A VET</span>
-        <span className={`pv-mirror ${DISPLAY_WORD}`}>PET A VET</span>
-      </div>
-      <img
-        src={bigtypeCut}
-        alt={
-          mirrored
-            ? ""
-            : "Golden retriever entre uma mala com um gato em cima e uma pilha de bagagens com bolsa de transporte e passaporte"
-        }
-        aria-hidden={mirrored || undefined}
-        width={1487}
-        height={1000}
-        className="absolute bottom-0 left-1/2 h-[88%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
-      />
-    </div>
-  );
-}
+  "block text-[clamp(2.6rem,17vw,15rem)] leading-[0.82] font-medium tracking-[-0.045em] whitespace-nowrap text-pv-accent";
 
 export function BigTypeSection() {
   return (
-    <section className="bg-pv-cream-2 relative overflow-hidden pt-14 lg:pt-16">
+    <section
+      className="bg-pv-cream-2 relative overflow-hidden pt-14 lg:pt-16"
+      style={{ "--pv-stage": "clamp(15rem,40vw,34rem)" } as React.CSSProperties}
+    >
       <Reveal className="mx-auto max-w-[1180px] px-6 text-center sm:px-10 lg:px-14">
         <Eyebrow>Tudo o que o seu pet precisa</Eyebrow>
         <h2 className="text-pv-ink mt-4 text-[clamp(1.6rem,3vw,2.6rem)]">
@@ -193,21 +168,42 @@ export function BigTypeSection() {
 
       <div className="relative mt-8">
         <IconRail
+          tone="warm"
           icons={RAIL_ICONS}
           className="absolute top-[60%] left-[6%] z-30 hidden -translate-y-1/2 lg:flex"
         />
         <IconRail
+          tone="warm"
           icons={[...RAIL_ICONS, ChevronUp]}
           className="absolute top-[38%] right-[6%] z-30 hidden -translate-y-1/2 lg:flex"
         />
 
-        <BigTypeStage />
-
-        {/* floor reflection */}
-        <div className="pv-mirror relative -mt-px h-[clamp(4.5rem,10vw,9rem)] overflow-hidden">
-          <div className="absolute inset-x-0 bottom-0">
-            <BigTypeStage mirrored />
+        {/* stage: display word + cut-out standing on the floor line */}
+        <div className="relative h-[var(--pv-stage)] w-full overflow-hidden">
+          <div aria-hidden="true" className="absolute top-[12%] left-1/2 w-max -translate-x-1/2">
+            <span className={DISPLAY_WORD}>PET A VET</span>
           </div>
+          <img
+            src={bigtypeCut}
+            alt="Golden retriever entre uma mala com um gato em cima e uma pilha de bagagens com bolsa de transporte e passaporte"
+            width={1487}
+            height={1000}
+            className="absolute bottom-0 left-1/2 h-[88%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
+          />
+        </div>
+
+        {/*
+          Floor reflection: only the cut-out is mirrored, and only for a few rem
+          below the seam. Mirroring the whole stage repeated the word a second
+          time and read as a rendering glitch.
+        */}
+        <div className="relative -mt-px h-[clamp(2.5rem,5.5vw,5rem)] overflow-hidden">
+          <img
+            src={bigtypeCut}
+            alt=""
+            aria-hidden="true"
+            className="pv-mirror absolute top-0 left-1/2 h-[calc(var(--pv-stage)*0.88)] w-auto max-w-none -translate-x-1/2 object-contain"
+          />
         </div>
       </div>
 
@@ -217,14 +213,14 @@ export function BigTypeSection() {
             <Reveal key={i} delay={i * 80}>
               <article className="bg-pv-white flex h-full flex-col items-center justify-center gap-4 rounded-[5px] px-5 py-8 text-center">
                 <div className="flex items-center gap-2">
-                  <span className="border-pv-accent/35 text-pv-accent grid h-6 w-6 place-items-center rounded-full border">
+                  <span className="border-pv-sky text-pv-sky-deep bg-pv-sky-soft grid h-6 w-6 place-items-center rounded-full border">
                     <Check className="h-3 w-3" />
                   </span>
-                  <span className="bg-pv-deep text-pv-cream rounded-full px-3 py-1 text-[0.58rem] font-medium tracking-[0.02em]">
+                  <span className="bg-pv-deep text-pv-cream rounded-full px-3 py-1 text-[0.77rem] font-medium tracking-[0.02em]">
                     Você vai ter
                   </span>
                 </div>
-                <p className="text-pv-ink text-[0.92rem]">{o.title}</p>
+                <p className="text-pv-ink text-[1.11rem]">{o.title}</p>
               </article>
             </Reveal>
           ))}
@@ -273,7 +269,7 @@ export function StepsSection() {
                 </h2>
               </div>
               <div aria-hidden="true" className="relative hidden h-11 w-[4.3rem] shrink-0 sm:block">
-                <span className="border-pv-line absolute top-0 right-0 h-11 w-11 rounded-full border" />
+                <span className="border-pv-sky absolute top-0 right-0 h-11 w-11 rounded-full border-2" />
                 <span className="bg-pv-accent text-pv-cream-3 absolute top-0 left-0 grid h-11 w-11 place-items-center rounded-full">
                   <ArrowDownLeft className="h-4 w-4" />
                 </span>
@@ -287,7 +283,7 @@ export function StepsSection() {
                     <span className="bg-pv-accent grid h-[1.15rem] w-[1.15rem] shrink-0 place-items-center rounded-full">
                       <Check className="h-2.5 w-2.5 text-white" strokeWidth={3.5} />
                     </span>
-                    <span className="text-pv-ink text-[0.76rem] leading-[1.35]">{e}</span>
+                    <span className="text-pv-ink text-[0.95rem] leading-[1.4]">{e}</span>
                   </div>
                 </Reveal>
               ))}
@@ -303,7 +299,11 @@ export function StepsSection() {
  * 07 — O QUE VOCÊ RECEBE (edge-to-edge carousel)
  * ================================================================== */
 const INCLUDED = [
-  { img: bAvaliacao, title: ["Avaliação", "veterinária"], alt: "Veterinária examinando um cachorro" },
+  {
+    img: bAvaliacao,
+    title: ["Avaliação", "veterinária"],
+    alt: "Veterinária examinando um cachorro",
+  },
   { img: bVacina, title: ["Vacinação", "completa"], alt: "Aplicação de vacina em um cachorro" },
   { img: bMicrochip, title: ["Microchip", "do pet"], alt: "Leitura de microchip em um gato" },
   { img: bExames, title: ["Exames", "exigidos"], alt: "Análise laboratorial veterinária" },
@@ -351,10 +351,7 @@ export function IncludedSection() {
       </Reveal>
 
       <Reveal delay={80}>
-        <div
-          ref={trackRef}
-          className="pv-no-scrollbar mt-11 flex gap-3 overflow-x-auto px-6 pb-1"
-        >
+        <div ref={trackRef} className="pv-no-scrollbar mt-11 flex gap-3 overflow-x-auto px-6 pb-1">
           {INCLUDED.map((c) => (
             <figure
               key={c.title.join(" ")}
