@@ -183,12 +183,20 @@ export function BigTypeSection() {
           <div aria-hidden="true" className="absolute top-[12%] left-1/2 w-max -translate-x-1/2">
             <span className={DISPLAY_WORD}>PET A VET</span>
           </div>
+          {/*
+            Contact shadow along the floor line. Without it the cut-out reads as
+            pasted on rather than standing on the surface.
+          */}
+          <div
+            aria-hidden="true"
+            className="absolute bottom-[1%] left-1/2 h-[6%] w-[64%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(69,34,7,0.24),rgba(69,34,7,0))] blur-[4px]"
+          />
           <img
             src={bigtypeCut}
-            alt="Golden retriever entre uma mala com um gato em cima e uma pilha de bagagens com bolsa de transporte e passaporte"
-            width={1487}
-            height={1000}
-            className="absolute bottom-0 left-1/2 h-[88%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
+            alt="Golden retriever de mochila entre uma mala com um gato de óculos escuros em cima e uma pilha de bagagens com bolsa de transporte e passaporte"
+            width={1250}
+            height={786}
+            className="absolute bottom-0 left-1/2 h-[76%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom drop-shadow-[0_16px_26px_rgba(69,34,7,0.12)]"
           />
         </div>
 
@@ -202,7 +210,7 @@ export function BigTypeSection() {
             src={bigtypeCut}
             alt=""
             aria-hidden="true"
-            className="pv-mirror absolute top-0 left-1/2 h-[calc(var(--pv-stage)*0.88)] w-auto max-w-none -translate-x-1/2 object-contain"
+            className="pv-mirror absolute top-0 left-1/2 h-[calc(var(--pv-stage)*0.76)] w-auto max-w-none -translate-x-1/2 object-contain"
           />
         </div>
       </div>
@@ -351,11 +359,11 @@ export function IncludedSection() {
       </Reveal>
 
       <Reveal delay={80}>
-        <div ref={trackRef} className="pv-no-scrollbar mt-11 flex gap-3 overflow-x-auto px-6 pb-1">
+        <div ref={trackRef} className="pv-no-scrollbar mt-11 flex gap-4 overflow-x-auto px-6 pb-1">
           {INCLUDED.map((c) => (
             <figure
               key={c.title.join(" ")}
-              className="relative aspect-[238/337] w-[14.5rem] shrink-0 overflow-hidden rounded-[5px] bg-black sm:w-[15.5rem]"
+              className="relative aspect-[238/337] w-[18rem] shrink-0 overflow-hidden rounded-[10px] bg-black sm:w-[21rem] lg:w-[23rem]"
             >
               <img
                 src={c.img}
@@ -363,14 +371,15 @@ export function IncludedSection() {
                 loading="lazy"
                 className="h-full w-full object-cover opacity-95"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/35 to-transparent" />
-              <figcaption className="absolute inset-x-0 bottom-0 px-4 pb-5 text-center">
-                <p className="text-[1.5rem] leading-[1.08] font-normal tracking-[-0.03em] text-white uppercase">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+              {/* caption rides on a frosted panel instead of a flat scrim */}
+              <figcaption className="pv-glass-dark absolute inset-x-3 bottom-3 rounded-[8px] px-4 py-5 text-center">
+                <p className="text-[1.85rem] leading-[1.06] font-normal tracking-[-0.03em] text-white uppercase">
                   {c.title[0]}
                   <br />
                   {c.title[1]}
                 </p>
-                <p className="mt-3 text-[0.5rem] tracking-[0.32em] text-white/65 uppercase">
+                <p className="mt-3 text-[0.62rem] tracking-[0.32em] text-white/75 uppercase">
                   Pet a Vet
                 </p>
               </figcaption>
