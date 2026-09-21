@@ -16,6 +16,7 @@ import {
   DiagonalBands,
   Eyebrow,
   IconRail,
+  LogoLockup,
   Reveal,
   Seal,
   useCarousel,
@@ -87,7 +88,7 @@ export function IntroSection() {
             <figure className="aspect-[346/128] overflow-hidden rounded-[2px]">
               <img
                 src={bentoExam}
-                alt="Veterinária auscultando um cachorro na clínica"
+                alt="Veterinário aplicando vacina em um gato na clínica"
                 loading="lazy"
                 className="h-full w-full object-cover grayscale"
               />
@@ -142,26 +143,23 @@ const OUTCOMES: { title: ReactNode }[] = [
   {
     title: (
       <>
-        Exames <strong className="font-semibold">do destino</strong>
+        Sorologia <strong className="font-semibold">de raiva</strong>
       </>
     ),
   },
   {
     title: (
       <>
-        Documentação <strong className="font-semibold">orientada</strong>
+        Orientações <strong className="font-semibold">adequadas</strong>
       </>
     ),
   },
 ];
 
 /*
- * The word is sized to fit the viewport (18vw x 9 glyphs) instead of bleeding
- * off both edges — "ET A VE" read as a mistake rather than as a crop.
+ * Brand lockup replaces the oversized wordmark so the mark matches
+ * the official Pet a Vet logo used elsewhere on the page.
  */
-const DISPLAY_WORD =
-  "block text-[clamp(2.6rem,17vw,15rem)] leading-[0.82] font-medium tracking-[-0.045em] whitespace-nowrap text-pv-accent";
-
 export function BigTypeSection() {
   return (
     <section
@@ -187,10 +185,10 @@ export function BigTypeSection() {
           className="absolute top-[38%] right-[6%] z-30 hidden -translate-y-1/2 lg:flex"
         />
 
-        {/* stage: display word + cut-out standing on the floor line */}
+        {/* stage: logo + cut-out standing on the floor line */}
         <div className="relative h-[var(--pv-stage)] w-full overflow-hidden">
-          <div aria-hidden="true" className="absolute top-[12%] left-1/2 w-max -translate-x-1/2">
-            <span className={DISPLAY_WORD}>PET A VET</span>
+          <div aria-hidden="true" className="absolute top-[10%] left-1/2 w-max -translate-x-1/2">
+            <LogoLockup height="h-[clamp(3.2rem,12vw,9rem)]" />
           </div>
           {/*
             Contact shadow along the floor line. Without it the cut-out reads as
@@ -258,19 +256,18 @@ export function BigTypeSection() {
 const ETAPAS = [
   "Avaliação veterinária completa",
   "Checagem da carteira de vacinação",
-  "Vacina antirrábica e reforços",
+  "Vacina antirrábica",
   "Microchipagem de identificação",
-  "Exames laboratoriais exigidos",
-  "Sorologia para raiva, quando exigida",
-  "Vermifugação e antiparasitários",
+  "Sorologia de raiva, quando exigida",
+  "Antiparasitários internos e externos",
   "Atestado de saúde veterinário",
   "Orientação sobre os prazos de cada etapa",
   "Verificação das exigências do destino",
   "Apoio no preenchimento da documentação",
-  "Orientação para a emissão do CVI",
+  "Orientação para o certificado de viagem internacional",
   "Recomendações para o transporte",
   "Cuidados nos dias que antecedem o embarque",
-  "Acompanhamento até a data da viagem",
+  "Suporte até a data da viagem",
 ];
 
 export function StepsSection() {
@@ -332,7 +329,7 @@ const INCLUDED = [
   },
   {
     img: bViagem,
-    title: ["Orientação", "para o CVI"],
+    title: ["Orientação", "para o certificado"],
     alt: "Cachorro pronto para viajar ao lado de uma mala",
   },
 ];
@@ -350,12 +347,23 @@ export function IncludedSection() {
         </h2>
       </Reveal>
 
-      <Reveal delay={80}>
-        <div ref={trackRef} className="pv-no-scrollbar mt-11 flex gap-4 overflow-x-auto px-6 pb-1">
+      <Reveal delay={80} className="relative mt-11">
+        <CarouselArrows
+          placement="sides"
+          onPrev={() => step(-1)}
+          onNext={() => step(1)}
+          atStart={atStart}
+          atEnd={atEnd}
+          label="carrossel do que você recebe"
+        />
+        <div
+          ref={trackRef}
+          className="pv-no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-12 pb-1 md:snap-none md:gap-2 md:px-6"
+        >
           {INCLUDED.map((c) => (
             <figure
               key={c.title.join(" ")}
-              className="relative aspect-[238/337] w-[18rem] shrink-0 overflow-hidden rounded-[10px] bg-black sm:w-[21rem] lg:w-[23rem]"
+              className="relative aspect-[238/337] w-[calc(100vw-6.5rem)] shrink-0 snap-center overflow-hidden rounded-[10px] bg-[#ece7e1] md:w-[18rem] lg:w-[23rem]"
             >
               <img
                 src={c.img}
@@ -382,6 +390,7 @@ export function IncludedSection() {
 
       <div className="mt-7 flex items-center justify-center gap-6">
         <CarouselArrows
+          className="hidden md:flex"
           onPrev={() => step(-1)}
           onNext={() => step(1)}
           atStart={atStart}

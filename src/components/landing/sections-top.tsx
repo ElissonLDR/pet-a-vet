@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 
 import { Cta, Eyebrow, IconRail, LogoLockup, Reveal, TickerStrip } from "./primitives";
-import logo from "@/assets/logo-mark.png";
+import logo from "@/assets/logo-icon.png";
 import heroCut from "@/assets/hero-cut.png";
 import heroGate from "@/assets/hero-gate.jpg";
 import collageSelfie from "@/assets/collage-selfie.jpg";
@@ -93,7 +93,7 @@ export function HeroSection() {
 
           <Reveal delay={230}>
             <div className="mt-10">
-              <Cta size="lg">Quero emitir o CVI do meu pet</Cta>
+              <Cta size="lg">Quero o certificado de viagem internacional</Cta>
             </div>
           </Reveal>
         </div>
@@ -146,17 +146,17 @@ export function HeroSection() {
           </span>
           <span className="pv-glass text-pv-ink absolute bottom-[3%] left-[2%] z-30 hidden items-center gap-2 rounded-full py-2 pr-4 pl-3 text-[0.8rem] font-medium sm:inline-flex">
             <FileText className="text-pv-sky-deep h-3.5 w-3.5" />
-            Documentação orientada
+            Orientações adequadas
           </span>
         </div>
       </div>
 
       <TickerStrip
         items={[
-          "Certificado Veterinário Internacional",
+          "Certificado de viagem internacional",
           "Vacinação",
           "Microchipagem",
-          "Exames exigidos pelo destino",
+          "Sorologia de raiva",
           "Atestado de saúde",
           "Orientação sobre a documentação",
           "Vila Madalena — São Paulo",
@@ -242,9 +242,37 @@ const FLOAT_BADGES = [
 export function TruthSection() {
   return (
     <section className="bg-pv-cream overflow-hidden py-16 lg:py-20">
-      <div className="mx-auto grid max-w-[1280px] items-center gap-14 px-6 sm:px-10 lg:grid-cols-[minmax(0,54%)_minmax(0,46%)] lg:gap-10 lg:px-14">
+      <div className="mx-auto grid max-w-[1280px] items-center gap-10 px-6 sm:px-10 lg:grid-cols-[minmax(0,54%)_minmax(0,46%)] lg:gap-10 lg:px-14">
         {/* ---------------- collage ---------------- */}
-        <Reveal className="relative h-[23rem] sm:h-[27rem]">
+        {/* Mobile: stacked beige cards (no absolute overlap). Desktop: floating collage. */}
+        <Reveal className="relative grid grid-cols-2 gap-2 sm:hidden">
+          <figure className="overflow-hidden rounded-[6px] bg-[#ece7e1]">
+            <img
+              src={collageTravel}
+              alt="Gato sentado dentro de uma mala aberta"
+              loading="lazy"
+              className="aspect-[3/4] w-full object-cover"
+            />
+          </figure>
+          <figure className="overflow-hidden rounded-[6px] bg-[#ece7e1]">
+            <img
+              src={collageSelfie}
+              alt="Tutora gravando um vídeo com seu cachorro"
+              loading="lazy"
+              className="aspect-[3/4] w-full object-cover"
+            />
+          </figure>
+          <figure className="bg-pv-white col-span-2 overflow-hidden rounded-[6px] px-5 py-6">
+            <blockquote>
+              <p className="text-pv-ink text-[1.15rem] leading-[1.25] font-medium">
+                Não falta amor.{" "}
+                <span className="text-pv-accent pv-underline font-semibold">Falta preparo.</span>
+              </p>
+            </blockquote>
+          </figure>
+        </Reveal>
+
+        <Reveal className="relative hidden h-[23rem] sm:block sm:h-[27rem]">
           {/* dark chat card */}
           <figure className="pv-shadow-float absolute top-[8%] right-[6%] w-[37%] -rotate-[3deg] overflow-hidden rounded-[6px] bg-[#141210]">
             <div className="flex items-center gap-2 px-2.5 py-2">
@@ -373,20 +401,22 @@ export function TruthSection() {
  * ================================================================== */
 const PAINS: { img: string; alt: string; label: ReactNode }[] = [
   {
+    img: painAirport,
+    alt: "Tutora e seu cachorro olhando a pista pela janela do aeroporto",
+    label: (
+      <>
+        Quer viajar com o pet,
+        <br />
+        <strong className="font-semibold">mas não sabe como</strong>
+      </>
+    ),
+  },
+  {
     img: painDocs,
     alt: "Mãos organizando documentos veterinários sobre uma mesa",
     label: (
       <>
         Não sabe <strong className="font-semibold">quais documentos</strong> precisa
-      </>
-    ),
-  },
-  {
-    img: painPhone,
-    alt: "Tutora pesquisando no celular ao lado do seu cachorro",
-    label: (
-      <>
-        Tem <strong className="font-semibold">medo de errar</strong> o prazo
       </>
     ),
   },
@@ -400,13 +430,11 @@ const PAINS: { img: string; alt: string; label: ReactNode }[] = [
     ),
   },
   {
-    img: painAirport,
-    alt: "Tutora e seu cachorro olhando a pista pela janela do aeroporto",
+    img: painPhone,
+    alt: "Tutora pesquisando no celular ao lado do seu cachorro",
     label: (
       <>
-        Quer viajar com o pet,
-        <br />
-        <strong className="font-semibold">mas não sabe como</strong>
+        Tem <strong className="font-semibold">medo de errar</strong> o prazo
       </>
     ),
   },
