@@ -33,12 +33,12 @@ import collageSelfie from "@/assets/collage-selfie.jpg";
  * ================================================================== */
 const OFFER = [
   "Avaliação veterinária presencial",
-  "Vacinação e reforços",
+  "Vacinação",
   "Microchipagem",
-  "Exames exigidos pelo destino",
+  "Sorologia de raiva, quando exigida",
   "Atestado de saúde veterinário",
   "Orientação sobre a documentação",
-  "Orientação para a emissão do CVI",
+  "Orientação para o certificado de viagem internacional",
 ];
 
 export function PlanSection() {
@@ -74,33 +74,25 @@ export function PlanSection() {
                 </ul>
               </div>
 
-              {/* ---- right: the headline number ---- */}
+              {/* ---- right: planning lead time ---- */}
               <div className="bg-pv-white px-8 py-10 text-center sm:px-10 lg:px-12 lg:py-14">
                 <div className="flex justify-center">
                   <LogoLockup height="h-12" />
                 </div>
 
-                <div className="mt-9 flex items-end justify-center gap-2">
-                  <p className="text-pv-ink pb-3 text-right text-[clamp(0.85rem,1.5vw,1.15rem)] leading-[1.15]">
-                    Comece
-                    <br />
-                    com
-                  </p>
-                  <p className="text-pv-accent text-[clamp(3.6rem,8.5vw,5.6rem)] leading-[0.85] font-medium">
-                    60
-                  </p>
-                  <p className="text-pv-ink pb-3 text-[clamp(0.85rem,1.5vw,1.15rem)]">dias</p>
-                </div>
-
-                <p className="border-pv-line text-pv-ink mx-auto mt-6 inline-block rounded-full border px-6 py-2.5 text-[0.99rem]">
-                  Ou o quanto antes <strong className="font-semibold">for possível</strong>
+                <p className="text-pv-ink mx-auto mt-9 max-w-[22rem] text-left text-[1.02rem] leading-[1.65]">
+                  Dependendo do destino, os prazos burocráticos e sanitários podem superar{" "}
+                  <strong className="font-semibold">3 meses</strong>. Para garantir uma viagem
+                  tranquila e sem imprevistos, orientamos começar o planejamento com{" "}
+                  <strong className="text-pv-accent font-semibold">4 a 6 meses</strong> de
+                  antecedência.
                 </p>
 
                 <a
                   href={WHATS}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-pv-accent text-pv-cream-3 hover:bg-pv-deep mt-7 flex w-full items-center justify-center gap-2.5 rounded-[3px] px-6 py-[1.25rem] text-center text-[0.95rem] font-medium tracking-[0.09em] uppercase transition-colors duration-300"
+                  className="bg-pv-accent text-pv-cream-3 hover:bg-pv-deep mt-7 flex w-full items-center justify-center gap-2 rounded-[3px] px-5 py-[1.05rem] text-center text-[0.78rem] font-medium tracking-[0.07em] uppercase transition-colors duration-300 sm:gap-2.5 sm:px-6 sm:py-[1.25rem] sm:text-[0.95rem] sm:tracking-[0.09em]"
                 >
                   Quero falar com a Pet a Vet
                   <ArrowUpRight className="h-[0.95rem] w-[0.95rem]" />
@@ -169,7 +161,7 @@ const THREADS = [
       "Eu já tinha tentado entender sozinha e só me confundi mais — cada site dizia uma coisa diferente e eu não sabia em quem confiar.",
       "Na consulta explicaram exatamente o que o meu destino exigia, o que a Mel já tinha em dia e o que ainda faltava. Saí com tudo anotado.",
       "O que mais me ajudou foi entender os prazos. Eu não fazia ideia de que alguns exames só valem depois de um intervalo específico.",
-      "Me acompanharam até a emissão do CVI e tiraram todas as minhas dúvidas por mensagem.",
+      "Me deram suporte até a emissão do certificado de viagem internacional e tiraram todas as minhas dúvidas por mensagem.",
       "Viajei tranquila, sabendo que a documentação da Mel estava certa. Foi a única parte da mudança que não me deu dor de cabeça.",
       "Assim que a gente se instalar eu mando foto dela no apartamento novo!",
     ],
@@ -178,7 +170,7 @@ const THREADS = [
 
 function ChatCard({ t }: { t: (typeof THREADS)[number] }) {
   return (
-    <figure className="border-pv-line/70 bg-pv-white w-[15.5rem] shrink-0 overflow-hidden rounded-[8px] border p-2 sm:w-[16.5rem]">
+    <figure className="border-pv-line/70 bg-pv-white w-[calc(100vw-6.5rem)] shrink-0 snap-center overflow-hidden rounded-[8px] border p-2 md:w-[16.5rem]">
       <div className="overflow-hidden rounded-[5px]">
         <div className="flex items-center gap-1.5 bg-[#ece7e1] px-2 py-1.5">
           <ChevronLeft className="h-2.5 w-2.5 shrink-0 text-black/55" />
@@ -216,7 +208,7 @@ export function TestimonialsSection() {
               Tutores que já viajaram com a Pet a Vet
             </h2>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="hidden items-center gap-4 md:flex">
             <div className="flex -space-x-3" aria-hidden="true">
               {[depo1, collageSelfie, depo2].map((src, i) => (
                 <span
@@ -238,8 +230,19 @@ export function TestimonialsSection() {
         </Reveal>
       </div>
 
-      <Reveal delay={80}>
-        <div ref={trackRef} className="pv-no-scrollbar mt-11 flex gap-3 overflow-x-auto px-6 pb-1">
+      <Reveal delay={80} className="relative mt-11">
+        <CarouselArrows
+          placement="sides"
+          onPrev={() => step(-1)}
+          onNext={() => step(1)}
+          atStart={atStart}
+          atEnd={atEnd}
+          label="carrossel de depoimentos"
+        />
+        <div
+          ref={trackRef}
+          className="pv-no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-12 pb-1 md:snap-none md:gap-2 md:px-6"
+        >
           {THREADS.map((t) => (
             <ChatCard key={t.name} t={t} />
           ))}
@@ -250,7 +253,7 @@ export function TestimonialsSection() {
           ].map((p) => (
             <figure
               key={p.name}
-              className="border-pv-line/70 bg-pv-white relative w-[15.5rem] shrink-0 overflow-hidden rounded-[8px] border p-2 sm:w-[16.5rem]"
+              className="border-pv-line/70 bg-pv-white relative w-[calc(100vw-6.5rem)] shrink-0 snap-center overflow-hidden rounded-[8px] border p-2 md:w-[16.5rem]"
             >
               <div className="relative h-[17.4rem] overflow-hidden rounded-[5px]">
                 <img
@@ -307,9 +310,9 @@ export function WhoSection() {
             <Eyebrow tone="soft">Um pouco sobre nós</Eyebrow>
             <h2 className="mt-5 text-[clamp(1.6rem,3vw,2.5rem)]">Quem somos nós</h2>
             <p className="mt-6 max-w-[30rem] text-[1.02rem] leading-[1.7] opacity-90">
-              A Pet a Vet é uma clínica veterinária na Vila Madalena que acompanha tutores durante a
-              preparação dos seus pets para viagens internacionais — da primeira avaliação até a
-              orientação para a emissão do Certificado Veterinário Internacional.
+              A Pet a Vet é uma clínica veterinária na Vila Madalena que oferece suporte a tutores
+              durante a preparação dos seus pets para viagens internacionais — da primeira avaliação
+              até a orientação para o certificado de viagem internacional.
             </p>
             <p className="mt-5 max-w-[30rem] text-[1.02rem] leading-[1.7] opacity-90">
               O que nos move é simples: cuidar bem do animal e tirar o peso da burocracia do colo do
@@ -329,7 +332,7 @@ export function WhoSection() {
               <div>
                 <p className="text-[clamp(2.6rem,5.5vw,4rem)] leading-[0.9] font-normal">100%</p>
                 <p className="mt-3 max-w-[11rem] text-[0.87rem] leading-[1.5] opacity-80">
-                  Acompanhamento veterinário do início ao embarque
+                  Suporte veterinário do início à viagem
                 </p>
               </div>
             </div>
@@ -357,16 +360,16 @@ export function WhoSection() {
  * ================================================================== */
 const FAQ = [
   {
-    q: "O que é o CVI?",
-    a: "O Certificado Veterinário Internacional (CVI) é o documento utilizado para comprovar que o animal atende às exigências sanitárias necessárias para uma viagem internacional.",
+    q: "O que é o certificado de viagem internacional?",
+    a: "O certificado de viagem internacional é o documento utilizado para comprovar que o animal atende às exigências sanitárias necessárias para uma viagem internacional.",
   },
   {
-    q: "Todo pet precisa de CVI para viajar para o exterior?",
+    q: "Todo pet precisa de certificado de viagem internacional para viajar para o exterior?",
     a: "As exigências variam conforme o país de destino. Por isso é importante verificar previamente quais documentos e procedimentos são necessários para a sua viagem.",
   },
   {
     q: "Quanto tempo antes da viagem devo começar?",
-    a: "O ideal é começar o planejamento com antecedência. Algumas etapas dependem de prazos específicos, então não é recomendado deixar a preparação para os últimos dias.",
+    a: "Dependendo do destino, os prazos burocráticos e sanitários podem superar 3 meses. Para garantir uma viagem tranquila e sem imprevistos, orientamos começar o planejamento com 4 a 6 meses de antecedência.",
   },
   {
     q: "Meu pet precisa de microchip?",
@@ -374,7 +377,7 @@ const FAQ = [
   },
   {
     q: "Meu pet precisa fazer sorologia?",
-    a: "Alguns destinos exigem exames específicos, como a sorologia para raiva. A necessidade depende das regras aplicáveis ao país de destino.",
+    a: "Alguns destinos exigem a sorologia de raiva. A necessidade depende das regras aplicáveis ao país de destino.",
   },
   {
     q: "E se a vacina do meu pet estiver atrasada?",
@@ -386,7 +389,7 @@ const FAQ = [
   },
   {
     q: "Vocês atendem na Vila Madalena?",
-    a: "Sim. A Pet a Vet fica na Vila Madalena e atende tutores da região que precisam preparar seus pets para viagens internacionais.",
+    a: "Sim! A Pet a Vet atende tutores de toda a cidade de São Paulo que precisam preparar seus pets para viajar. Nossa estrutura fica na Vila Madalena, com acesso fácil para diversas regiões.",
   },
 ];
 

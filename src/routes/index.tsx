@@ -19,13 +19,16 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Emissão de CVI para pets na Vila Madalena | Pet a Vet" },
+      { title: "Certificado de viagem internacional para pets | Pet a Vet" },
       {
         name: "description",
         content:
-          "Vacinas, microchip, exames e orientação para o Certificado Veterinário Internacional do seu pet. Atendimento na Vila Madalena, São Paulo.",
+          "Vacinas, microchip, sorologia de raiva e orientação para o certificado de viagem internacional do seu pet. Atendimento na Vila Madalena, São Paulo.",
       },
-      { property: "og:title", content: "Emissão de CVI para pets na Vila Madalena | Pet a Vet" },
+      {
+        property: "og:title",
+        content: "Certificado de viagem internacional para pets | Pet a Vet",
+      },
       {
         property: "og:description",
         content:

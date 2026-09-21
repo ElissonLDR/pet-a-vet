@@ -2,11 +2,12 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { ChevronLeft, ChevronRight, LogIn } from "lucide-react";
 import logo from "@/assets/logo-mark.png";
 import logoCream from "@/assets/logo-cream.png";
+import logoIcon from "@/assets/logo-icon.png";
 
 export const WHATS =
   "https://wa.me/5511999999999?text=" +
   encodeURIComponent(
-    "Olá! Vim pelo site e preciso de ajuda com o CVI/documentação para viajar com meu pet. Meu destino é ______ e a data da viagem é ______. Podem me orientar?",
+    "Olá! Vim pelo site e preciso de ajuda com o certificado de viagem internacional / documentação para viajar com meu pet. Meu destino é ______ e a data da viagem é ______. Podem me orientar?",
   );
 
 /* ------------------------------------------------------------------ *
@@ -127,16 +128,16 @@ export function Cta({
    * a 360px viewport without wrapping mid-word.
    */
   const pad =
-    size === "lg" ? "px-6 py-[1.25rem] sm:px-11 sm:py-[1.35rem]" : "px-6 py-[1.05rem] sm:px-10";
+    size === "lg" ? "px-5 py-[1.05rem] sm:px-11 sm:py-[1.35rem]" : "px-5 py-[0.95rem] sm:px-10 sm:py-[1.05rem]";
   return (
     <a
       href={WHATS}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex items-center justify-center gap-2.5 rounded-[3px] text-center text-[0.95rem] font-medium tracking-[0.09em] uppercase transition-colors duration-300 ${palette} ${pad} ${className}`}
+      className={`group inline-flex items-center justify-center gap-2 rounded-[3px] text-center text-[0.78rem] font-medium tracking-[0.07em] uppercase transition-colors duration-300 sm:gap-2.5 sm:text-[0.95rem] sm:tracking-[0.09em] ${palette} ${pad} ${className}`}
     >
       {children}
-      <LogIn className="h-[1.05rem] w-[1.05rem] shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+      <LogIn className="h-[0.95rem] w-[0.95rem] shrink-0 transition-transform duration-300 group-hover:translate-x-1 sm:h-[1.05rem] sm:w-[1.05rem]" />
     </a>
   );
 }
@@ -144,11 +145,42 @@ export function Cta({
 /* ------------------------------------------------------------------ *
  * Edge-to-edge carousel: scroll state + one-card-at-a-time stepping
  * ------------------------------------------------------------------ */
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function animateScrollLeft(el: HTMLElement, to: number, duration = 680) {
+  const from = el.scrollLeft;
+  const delta = to - from;
+  if (Math.abs(delta) < 1) return;
+
+  // Snap fights mid-animation — pause it until the ease finishes.
+  const prevSnap = el.style.scrollSnapType;
+  el.style.scrollSnapType = "none";
+
+  const start = performance.now();
+  let raf = 0;
+
+  const frame = (now: number) => {
+    const t = Math.min(1, (now - start) / duration);
+    el.scrollLeft = from + delta * easeInOutCubic(t);
+    if (t < 1) {
+      raf = requestAnimationFrame(frame);
+    } else {
+      el.style.scrollSnapType = prevSnap;
+    }
+  };
+
+  cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(frame);
+}
+
 export function useCarousel(pages = 3) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(Math.floor(pages / 2));
   const [atStart, setAtStart] = useState(false);
   const [atEnd, setAtEnd] = useState(false);
+  const animatingRef = useRef(false);
 
   const sync = useCallback(() => {
     const el = trackRef.current;
@@ -163,8 +195,9 @@ export function useCarousel(pages = 3) {
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
-    // Start centred so the row bleeds off both edges, as in the reference.
-    el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+    // Mobile: start on the first card. Desktop: centre so the row bleeds both edges.
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    el.scrollLeft = isMobile ? 0 : (el.scrollWidth - el.clientWidth) / 2;
     sync();
     el.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);
@@ -174,17 +207,25 @@ export function useCarousel(pages = 3) {
     };
   }, [sync]);
 
-  /* Steps by one card so the row always lands on a card edge. */
+  /* Steps by one card with a longer ease-in-out glide. */
   const step = useCallback((dir: 1 | -1) => {
     const el = trackRef.current;
-    if (!el) return;
+    if (!el || animatingRef.current) return;
     const first = el.firstElementChild as HTMLElement | null;
     const gap = first?.nextElementSibling
       ? (first.nextElementSibling as HTMLElement).offsetLeft - first.offsetLeft - first.offsetWidth
       : 16;
     const distance = first ? first.offsetWidth + gap : el.clientWidth * 0.8;
-    el.scrollBy({ left: dir * distance, behavior: "smooth" });
-  }, []);
+    const max = el.scrollWidth - el.clientWidth;
+    const target = Math.max(0, Math.min(max, el.scrollLeft + dir * distance));
+
+    animatingRef.current = true;
+    animateScrollLeft(el, target, 720);
+    window.setTimeout(() => {
+      animatingRef.current = false;
+      sync();
+    }, 740);
+  }, [sync]);
 
   return { trackRef, page, atStart, atEnd, step };
 }
@@ -196,6 +237,7 @@ export function CarouselArrows({
   atEnd,
   className = "",
   label = "carrossel",
+  placement = "inline",
 }: {
   onPrev: () => void;
   onNext: () => void;
@@ -203,9 +245,37 @@ export function CarouselArrows({
   atEnd: boolean;
   className?: string;
   label?: string;
+  /** `sides` = absolute left/right over the track (mobile). `inline` = clustered buttons. */
+  placement?: "inline" | "sides";
 }) {
   const base =
-    "border-pv-accent/45 text-pv-accent hover:bg-pv-accent hover:text-pv-cream-3 grid h-11 w-11 place-items-center rounded-full border transition-colors duration-300 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-pv-accent";
+    "border-pv-accent/45 text-pv-accent hover:bg-pv-accent hover:text-pv-cream-3 grid place-items-center rounded-full border bg-pv-cream/90 backdrop-blur-sm transition-colors duration-300 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-pv-cream/90 disabled:hover:text-pv-accent";
+
+  if (placement === "sides") {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={onPrev}
+          disabled={atStart}
+          aria-label={`Voltar no ${label}`}
+          className={`${base} absolute top-1/2 left-1 z-20 h-10 w-10 -translate-y-1/2 shadow-sm md:hidden ${className}`}
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={onNext}
+          disabled={atEnd}
+          aria-label={`Avançar no ${label}`}
+          className={`${base} absolute top-1/2 right-1 z-20 h-10 w-10 -translate-y-1/2 shadow-sm md:hidden ${className}`}
+        >
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      </>
+    );
+  }
+
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       <button
@@ -213,7 +283,7 @@ export function CarouselArrows({
         onClick={onPrev}
         disabled={atStart}
         aria-label={`Voltar no ${label}`}
-        className={base}
+        className={`${base} h-11 w-11`}
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -222,7 +292,7 @@ export function CarouselArrows({
         onClick={onNext}
         disabled={atEnd}
         aria-label={`Avançar no ${label}`}
-        className={base}
+        className={`${base} h-11 w-11`}
       >
         <ChevronRight className="h-4 w-4" />
       </button>
@@ -404,7 +474,7 @@ export function Seal({ className = "" }: { className?: string }) {
         </text>
       </svg>
       <img
-        src={logo}
+        src={logoIcon}
         alt=""
         className="pointer-events-none absolute top-1/2 left-1/2 w-[46%] -translate-x-1/2 -translate-y-1/2"
       />

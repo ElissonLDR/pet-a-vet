@@ -346,6 +346,8 @@
 @utility pv-no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-behavior: auto; /* programmatic scroll uses custom easing */
+  -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     display: none;
   }

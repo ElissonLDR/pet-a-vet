@@ -77,14 +77,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Pet a Vet — CVI para pets na Vila Madalena" },
+      { title: "Pet a Vet — certificado de viagem internacional na Vila Madalena" },
       {
         name: "description",
         content:
-          "Preparação veterinária e orientação para emissão do Certificado Veterinário Internacional do seu pet, na Vila Madalena.",
+          "Preparação veterinária e orientação para o certificado de viagem internacional do seu pet, na Vila Madalena.",
       },
       { name: "author", content: "Pet a Vet" },
-      { property: "og:title", content: "Pet a Vet — CVI para pets na Vila Madalena" },
+      {
+        property: "og:title",
+        content: "Pet a Vet — certificado de viagem internacional na Vila Madalena",
+      },
       {
         property: "og:description",
         content: "Prepare seu pet para viajar ao exterior com apoio veterinário completo.",
