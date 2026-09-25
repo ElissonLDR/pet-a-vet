@@ -40,14 +40,18 @@ export function Reveal({
   delay = 0,
   className = "",
   as: As = "div",
+  variant = "default",
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "section" | "li" | "span";
+  as?: "div" | "section" | "li" | "span" | "h1" | "h2" | "h3";
+  /** `title` uses a stronger arrival (more travel + soft blur). */
+  variant?: "default" | "title";
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
+  const isTitle = variant === "title";
 
   useEffect(() => {
     const el = ref.current;
@@ -75,7 +79,9 @@ export function Reveal({
     <As
       ref={ref as never}
       style={{ "--pv-delay": `${delay}ms` } as React.CSSProperties}
-      className={`pv-reveal ${shown ? "pv-reveal-in" : ""} ${className}`}
+      className={`${isTitle ? "pv-reveal-title" : "pv-reveal"} ${
+        shown ? (isTitle ? "pv-reveal-title-in" : "pv-reveal-in") : ""
+      } ${className}`}
     >
       {children}
     </As>
@@ -177,35 +183,46 @@ function animateScrollLeft(el: HTMLElement, to: number, duration = 680) {
 
 export function useCarousel(pages = 3) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const [page, setPage] = useState(Math.floor(pages / 2));
+  const [page, setPage] = useState(0);
   const [atStart, setAtStart] = useState(false);
   const [atEnd, setAtEnd] = useState(false);
   const animatingRef = useRef(false);
+  const syncRafRef = useRef(0);
 
   const sync = useCallback(() => {
     const el = trackRef.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
-    const ratio = max > 0 ? el.scrollLeft / max : 0;
+    const left = el.scrollLeft;
+    const ratio = max > 0 ? left / max : 0;
     setPage(Math.min(pages - 1, Math.round(ratio * (pages - 1))));
-    setAtStart(el.scrollLeft <= 2);
-    setAtEnd(max <= 0 || el.scrollLeft >= max - 2);
+    setAtStart(left <= 2);
+    setAtEnd(max <= 0 || left >= max - 2);
   }, [pages]);
+
+  /* Coalesce scroll/resize into one update per frame. */
+  const scheduleSync = useCallback(() => {
+    if (syncRafRef.current) return;
+    syncRafRef.current = requestAnimationFrame(() => {
+      syncRafRef.current = 0;
+      sync();
+    });
+  }, [sync]);
 
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
-    // Mobile: start on the first card. Desktop: centre so the row bleeds both edges.
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    el.scrollLeft = isMobile ? 0 : (el.scrollWidth - el.clientWidth) / 2;
+    // Always start on the first card (mobile and desktop).
+    el.scrollLeft = 0;
     sync();
-    el.addEventListener("scroll", sync, { passive: true });
-    window.addEventListener("resize", sync);
+    el.addEventListener("scroll", scheduleSync, { passive: true });
+    window.addEventListener("resize", scheduleSync);
     return () => {
-      el.removeEventListener("scroll", sync);
-      window.removeEventListener("resize", sync);
+      el.removeEventListener("scroll", scheduleSync);
+      window.removeEventListener("resize", scheduleSync);
+      if (syncRafRef.current) cancelAnimationFrame(syncRafRef.current);
     };
-  }, [sync]);
+  }, [sync, scheduleSync]);
 
   /* Steps by one card with a longer ease-in-out glide. */
   const step = useCallback((dir: 1 | -1) => {
@@ -214,8 +231,14 @@ export function useCarousel(pages = 3) {
     const first = el.firstElementChild as HTMLElement | null;
     const gap = first?.nextElementSibling
       ? (first.nextElementSibling as HTMLElement).offsetLeft - first.offsetLeft - first.offsetWidth
-      : 16;
-    const distance = first ? first.offsetWidth + gap : el.clientWidth * 0.8;
+      : 0;
+    // On full-bleed mobile slides, use the track width so we never peek neighbors.
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const distance = isMobile
+      ? el.clientWidth
+      : first
+        ? first.offsetWidth + gap
+        : el.clientWidth * 0.8;
     const max = el.scrollWidth - el.clientWidth;
     const target = Math.max(0, Math.min(max, el.scrollLeft + dir * distance));
 
@@ -249,7 +272,7 @@ export function CarouselArrows({
   placement?: "inline" | "sides";
 }) {
   const base =
-    "border-pv-accent/45 text-pv-accent hover:bg-pv-accent hover:text-pv-cream-3 grid place-items-center rounded-full border bg-pv-cream/90 backdrop-blur-sm transition-colors duration-300 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-pv-cream/90 disabled:hover:text-pv-accent";
+    "grid cursor-pointer place-items-center rounded-full border-2 border-pv-accent bg-pv-accent text-pv-cream-3 shadow-sm transition-colors duration-300 hover:border-pv-deep hover:bg-pv-deep disabled:cursor-default disabled:opacity-35 disabled:hover:border-pv-accent disabled:hover:bg-pv-accent";
 
   if (placement === "sides") {
     return (
@@ -259,18 +282,18 @@ export function CarouselArrows({
           onClick={onPrev}
           disabled={atStart}
           aria-label={`Voltar no ${label}`}
-          className={`${base} absolute top-1/2 left-1 z-20 h-10 w-10 -translate-y-1/2 shadow-sm md:hidden ${className}`}
+          className={`${base} absolute top-1/2 left-4 z-20 h-11 w-11 -translate-y-1/2 md:hidden ${className}`}
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-5 w-5" strokeWidth={2.5} />
         </button>
         <button
           type="button"
           onClick={onNext}
           disabled={atEnd}
           aria-label={`Avançar no ${label}`}
-          className={`${base} absolute top-1/2 right-1 z-20 h-10 w-10 -translate-y-1/2 shadow-sm md:hidden ${className}`}
+          className={`${base} absolute top-1/2 right-4 z-20 h-11 w-11 -translate-y-1/2 md:hidden ${className}`}
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-5 w-5" strokeWidth={2.5} />
         </button>
       </>
     );
@@ -283,18 +306,18 @@ export function CarouselArrows({
         onClick={onPrev}
         disabled={atStart}
         aria-label={`Voltar no ${label}`}
-        className={`${base} h-11 w-11`}
+        className={`${base} h-12 w-12`}
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-5 w-5" strokeWidth={2.5} />
       </button>
       <button
         type="button"
         onClick={onNext}
         disabled={atEnd}
         aria-label={`Avançar no ${label}`}
-        className={`${base} h-11 w-11`}
+        className={`${base} h-12 w-12`}
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-5 w-5" strokeWidth={2.5} />
       </button>
     </div>
   );
@@ -303,7 +326,7 @@ export function CarouselArrows({
 /* ------------------------------------------------------------------ *
  * Horizontal ticker strip (hero foot)
  * ------------------------------------------------------------------ */
-export function TickerStrip({ items, duration = 46 }: { items: string[]; duration?: number }) {
+export function TickerStrip({ items, duration = 140 }: { items: string[]; duration?: number }) {
   const doubled = [...items, ...items];
   return (
     <div className="border-pv-line bg-pv-cream-3 relative w-full overflow-hidden border-y">
@@ -357,23 +380,21 @@ function DottedSeal({ className = "" }: { className?: string }) {
 }
 
 /* ------------------------------------------------------------------ *
- * Two tilted bands crossing the page in an X
- *
- * The back band leans one way in the logo cyan, the front band leans the
- * other way in the deep brown, so they read as two ribbons crossing rather
- * than as one thick stripe.
+ * Two parallel horizontal ticker bands (stacked, never crossing)
  * ------------------------------------------------------------------ */
-export function DiagonalBands({ text, className = "" }: { text: string; className?: string }) {
+function HorizontalBand({
+  text,
+  dir,
+  duration,
+  tone,
+}: {
+  text: string;
+  dir: "left" | "right";
+  duration: number;
+  tone: "front" | "back";
+}) {
   const row = Array.from({ length: 12 }, (_, i) => i);
-  const Band = ({
-    dir,
-    duration,
-    tone,
-  }: {
-    dir: "left" | "right";
-    duration: number;
-    tone: "front" | "back";
-  }) => (
+  return (
     <div
       className={`w-full overflow-hidden py-[0.8rem] ${
         tone === "front" ? "bg-pv-deep text-pv-cream" : "bg-pv-sky-deep text-pv-sky-soft"
@@ -383,7 +404,7 @@ export function DiagonalBands({ text, className = "" }: { text: string; classNam
         className={dir === "left" ? "pv-track-left" : "pv-track-right"}
         style={{ "--pv-duration": `${duration}s` } as React.CSSProperties}
       >
-        {[...row, ...row].map((i, n) => (
+        {[...row, ...row].map((_, n) => (
           <div key={n} className="flex shrink-0 items-center gap-10 pr-10">
             <span className="text-[1.01rem] whitespace-nowrap opacity-95">{text}</span>
             <DottedSeal className={tone === "front" ? "text-pv-sky" : "text-pv-sky-soft"} />
@@ -392,23 +413,36 @@ export function DiagonalBands({ text, className = "" }: { text: string; classNam
       </div>
     </div>
   );
+}
 
-  /*
-   * Both bands are absolutely centred on the same axis so they overlap at the
-   * middle of the page. 150% wide keeps the rotated ends past the viewport,
-   * and the container is tall enough to hold the vertical travel of the tilt.
-   */
+/** Stacked horizontal ribbons — keeps the old name so existing call sites work. */
+export function DiagonalBands({ text, className = "" }: { text: string; className?: string }) {
   return (
     <div
-      className={`pointer-events-none relative h-[10.5rem] w-full overflow-hidden select-none sm:h-[12rem] ${className}`}
+      className={`pointer-events-none relative flex w-full flex-col gap-2 overflow-hidden select-none ${className}`}
       aria-hidden="true"
     >
-      <div className="absolute top-1/2 left-[-25%] w-[150%] origin-center -translate-y-1/2 rotate-[2.6deg]">
-        <Band dir="right" duration={46} tone="back" />
-      </div>
-      <div className="absolute top-1/2 left-[-25%] w-[150%] origin-center -translate-y-1/2 -rotate-[2.6deg]">
-        <Band dir="left" duration={38} tone="front" />
-      </div>
+      <HorizontalBand text={text} dir="left" duration={160} tone="back" />
+      <HorizontalBand text={text} dir="right" duration={140} tone="front" />
+    </div>
+  );
+}
+
+/** Single band — used above/below a card without stacking a pair. */
+export function TickerBand({
+  text,
+  tone = "front",
+  dir = "left",
+  className = "",
+}: {
+  text: string;
+  tone?: "front" | "back";
+  dir?: "left" | "right";
+  className?: string;
+}) {
+  return (
+    <div className={`pointer-events-none w-full overflow-hidden select-none ${className}`} aria-hidden="true">
+      <HorizontalBand text={text} dir={dir} duration={tone === "front" ? 140 : 160} tone={tone} />
     </div>
   );
 }

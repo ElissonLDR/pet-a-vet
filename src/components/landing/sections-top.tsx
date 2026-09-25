@@ -66,7 +66,7 @@ export function HeroSection() {
             </div>
           </Reveal>
 
-          <Reveal delay={90}>
+          <Reveal delay={90} variant="title">
             <h1 className="text-pv-ink mt-9 text-[clamp(2.15rem,3.5vw,3.2rem)] leading-[1.08] font-normal">
               Você não precisa
               <br />
@@ -370,7 +370,7 @@ export function TruthSection() {
           <Reveal>
             <Eyebrow>Pode ser difícil ouvir isso</Eyebrow>
           </Reveal>
-          <Reveal delay={80}>
+          <Reveal delay={80} variant="title">
             <h2 className="text-pv-ink mt-5 text-[clamp(1.75rem,3.05vw,2.75rem)] leading-[1.12]">
               A verdade que ninguém
               <br className="hidden sm:block" /> te conta sobre viajar
@@ -444,7 +444,7 @@ export function PainSection() {
   return (
     <section className="bg-pv-cream pt-8 pb-16 lg:pt-10 lg:pb-20">
       <div className="mx-auto max-w-[1180px] px-6 sm:px-10 lg:px-14">
-        <Reveal className="text-center">
+        <Reveal className="text-center" variant="title">
           <Eyebrow>Você passa por isso</Eyebrow>
           <h2 className="text-pv-ink mt-4 text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15]">
             Se você chegou até aqui, provavelmente:

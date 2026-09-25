@@ -14,11 +14,11 @@ import {
 import {
   CarouselArrows,
   Cta,
-  DiagonalBands,
   Eyebrow,
   LogoLockup,
   Reveal,
   Seal,
+  TickerBand,
   useCarousel,
   WHATS,
 } from "./primitives";
@@ -42,13 +42,13 @@ const OFFER = [
 ];
 
 export function PlanSection() {
-  return (
-    <section className="bg-pv-cream relative overflow-hidden py-16 lg:py-24">
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2">
-        <DiagonalBands text="Atendimento com hora marcada na Vila Madalena" />
-      </div>
+  const bandText = "Atendimento com hora marcada na Vila Madalena";
 
-      <div className="relative mx-auto max-w-[62rem] px-6 sm:px-10">
+  return (
+    <section className="bg-pv-cream relative overflow-hidden py-12 lg:py-20">
+      <TickerBand text={bandText} tone="back" dir="left" />
+
+      <div className="relative mx-auto max-w-[62rem] px-6 py-10 sm:px-10 lg:py-14">
         <Reveal>
           <div className="pv-shadow-float relative rounded-[6px]">
             <div className="absolute -top-11 left-1/2 z-20 hidden w-[5.5rem] -translate-x-1/2 sm:block">
@@ -58,10 +58,12 @@ export function PlanSection() {
             <div className="grid overflow-hidden rounded-[6px] md:grid-cols-[minmax(0,45%)_minmax(0,55%)]">
               {/* ---- left: what's included ---- */}
               <div className="bg-[#f2eae0] px-8 py-10 sm:px-10 lg:px-11 lg:py-14">
-                <Eyebrow>Atendimento</Eyebrow>
-                <h2 className="text-pv-ink mt-4 text-[clamp(1.45rem,2.6vw,2.05rem)]">
-                  Prepare seu pet
-                </h2>
+                <Reveal variant="title">
+                  <Eyebrow>Atendimento</Eyebrow>
+                  <h2 className="text-pv-ink mt-4 text-[clamp(1.45rem,2.6vw,2.05rem)]">
+                    Prepare seu pet
+                  </h2>
+                </Reveal>
                 <ul className="mt-7 space-y-3.5">
                   {OFFER.map((o) => (
                     <li key={o} className="flex items-center gap-3">
@@ -118,6 +120,8 @@ export function PlanSection() {
           </div>
         </Reveal>
       </div>
+
+      <TickerBand text={bandText} tone="front" dir="right" />
     </section>
   );
 }
@@ -170,7 +174,7 @@ const THREADS = [
 
 function ChatCard({ t }: { t: (typeof THREADS)[number] }) {
   return (
-    <figure className="border-pv-line/70 bg-pv-white w-[calc(100vw-6.5rem)] shrink-0 snap-center overflow-hidden rounded-[8px] border p-2 md:w-[16.5rem]">
+    <figure className="border-pv-line/70 bg-pv-white w-full min-w-full shrink-0 snap-start overflow-hidden rounded-[8px] border p-2 md:w-[16.5rem] md:min-w-0">
       <div className="overflow-hidden rounded-[5px]">
         <div className="flex items-center gap-1.5 bg-[#ece7e1] px-2 py-1.5">
           <ChevronLeft className="h-2.5 w-2.5 shrink-0 text-black/55" />
@@ -201,7 +205,7 @@ export function TestimonialsSection() {
   return (
     <section className="bg-pv-cream relative overflow-hidden pt-14 lg:pt-16">
       <div className="mx-auto max-w-[1180px] px-6 sm:px-10 lg:px-14">
-        <Reveal className="flex flex-wrap items-end justify-between gap-6">
+        <Reveal className="flex flex-wrap items-end justify-between gap-6" variant="title">
           <div>
             <Eyebrow>Depoimentos</Eyebrow>
             <h2 className="text-pv-ink mt-4 text-[clamp(1.6rem,3vw,2.6rem)]">
@@ -230,7 +234,7 @@ export function TestimonialsSection() {
         </Reveal>
       </div>
 
-      <Reveal delay={80} className="relative mt-11">
+      <Reveal delay={80} className="relative mt-11 px-5 md:px-6">
         <CarouselArrows
           placement="sides"
           onPrev={() => step(-1)}
@@ -241,7 +245,7 @@ export function TestimonialsSection() {
         />
         <div
           ref={trackRef}
-          className="pv-no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-12 pb-1 md:snap-none md:gap-2 md:px-6"
+          className="pv-no-scrollbar flex snap-x snap-mandatory gap-0 overflow-x-auto pb-1 md:snap-none md:justify-center md:gap-2"
         >
           {THREADS.map((t) => (
             <ChatCard key={t.name} t={t} />
@@ -253,7 +257,7 @@ export function TestimonialsSection() {
           ].map((p) => (
             <figure
               key={p.name}
-              className="border-pv-line/70 bg-pv-white relative w-[calc(100vw-6.5rem)] shrink-0 snap-center overflow-hidden rounded-[8px] border p-2 md:w-[16.5rem]"
+              className="border-pv-line/70 bg-pv-white relative w-full min-w-full shrink-0 snap-start overflow-hidden rounded-[8px] border p-2 md:w-[16.5rem] md:min-w-0"
             >
               <div className="relative h-[17.4rem] overflow-hidden rounded-[5px]">
                 <img
@@ -307,8 +311,10 @@ export function WhoSection() {
       <div className="relative mx-auto max-w-[1180px] px-6 sm:px-10 lg:px-14">
         <div className="relative grid items-center lg:grid-cols-[minmax(0,58%)_minmax(0,42%)]">
           <Reveal className="bg-pv-deep text-pv-cream relative z-10 px-8 py-12 sm:px-12 lg:px-14 lg:py-16">
-            <Eyebrow tone="soft">Um pouco sobre nós</Eyebrow>
-            <h2 className="mt-5 text-[clamp(1.6rem,3vw,2.5rem)]">Quem somos nós</h2>
+            <Reveal variant="title">
+              <Eyebrow tone="soft">Um pouco sobre nós</Eyebrow>
+              <h2 className="mt-5 text-[clamp(1.6rem,3vw,2.5rem)]">Quem somos nós</h2>
+            </Reveal>
             <p className="mt-6 max-w-[30rem] text-[1.02rem] leading-[1.7] opacity-90">
               A Pet a Vet é uma clínica veterinária na Vila Madalena que oferece suporte a tutores
               durante a preparação dos seus pets para viagens internacionais — da primeira avaliação
@@ -399,7 +405,7 @@ export function FaqSection() {
   return (
     <section className="bg-pv-deep px-6 py-20 sm:px-10 lg:py-24">
       <div className="mx-auto max-w-[56rem]">
-        <Reveal className="text-center">
+        <Reveal className="text-center" variant="title">
           <Eyebrow tone="soft">FAQ</Eyebrow>
           <h2 className="text-pv-cream mt-4 text-[clamp(1.75rem,3.4vw,2.9rem)]">
             Perguntas Frequentes

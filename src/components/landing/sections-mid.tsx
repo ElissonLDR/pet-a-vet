@@ -13,12 +13,12 @@ import {
 import {
   CarouselArrows,
   Cta,
-  DiagonalBands,
   Eyebrow,
   IconRail,
   LogoLockup,
   Reveal,
   Seal,
+  TickerBand,
   useCarousel,
 } from "./primitives";
 import bentoExam from "@/assets/bento-exam.jpg";
@@ -41,12 +41,17 @@ export function IntroSection() {
 
   return (
     <>
-      <DiagonalBands text="Não sabe quais documentos o seu pet precisa" className="my-10" />
+      <TickerBand
+        text="Não sabe quais documentos o seu pet precisa?"
+        tone="front"
+        dir="right"
+        className="my-10"
+      />
 
       <section className="bg-pv-cream py-14 lg:py-20">
         <div className="mx-auto max-w-[1180px] px-6 sm:px-10 lg:px-14">
           <div className="flex items-start justify-between gap-10">
-            <Reveal className="max-w-[46rem]">
+            <Reveal className="max-w-[46rem]" variant="title">
               <Eyebrow>A virada começa aqui</Eyebrow>
               <h2 className="text-pv-ink mt-5 text-[clamp(1.6rem,2.95vw,2.6rem)] leading-[1.15]">
                 A Pet a Vet é uma clínica veterinária na Vila Madalena{" "}
@@ -166,7 +171,7 @@ export function BigTypeSection() {
       className="bg-pv-cream-2 relative overflow-hidden pt-14 lg:pt-16"
       style={{ "--pv-stage": "clamp(15rem,40vw,34rem)" } as React.CSSProperties}
     >
-      <Reveal className="mx-auto max-w-[1180px] px-6 text-center sm:px-10 lg:px-14">
+      <Reveal className="mx-auto max-w-[1180px] px-6 text-center sm:px-10 lg:px-14" variant="title">
         <Eyebrow>Tudo o que o seu pet precisa</Eyebrow>
         <h2 className="text-pv-ink mt-4 text-[clamp(1.6rem,3vw,2.6rem)]">
           O que você vai resolver aqui
@@ -277,12 +282,12 @@ export function StepsSection() {
         <Reveal>
           <div className="bg-pv-white border-pv-line/70 rounded-[16px] border p-7 sm:p-10 lg:p-12">
             <div className="flex items-start justify-between gap-6">
-              <div>
+              <Reveal variant="title">
                 <Eyebrow>Etapas</Eyebrow>
                 <h2 className="text-pv-ink mt-3 text-[clamp(1.5rem,2.7vw,2.35rem)]">
                   O que o seu pet pode precisar
                 </h2>
-              </div>
+              </Reveal>
               <div aria-hidden="true" className="relative hidden h-11 w-[4.3rem] shrink-0 sm:block">
                 <span className="border-pv-sky absolute top-0 right-0 h-11 w-11 rounded-full border-2" />
                 <span className="bg-pv-accent text-pv-cream-3 absolute top-0 left-0 grid h-11 w-11 place-items-center rounded-full">
@@ -340,14 +345,14 @@ export function IncludedSection() {
 
   return (
     <section className="bg-pv-cream overflow-hidden py-14 lg:py-16">
-      <Reveal className="mx-auto max-w-[1180px] px-6 text-center sm:px-10 lg:px-14">
+      <Reveal className="mx-auto max-w-[1180px] px-6 text-center sm:px-10 lg:px-14" variant="title">
         <Eyebrow>Incluso</Eyebrow>
         <h2 className="text-pv-ink mt-4 text-[clamp(1.6rem,3vw,2.6rem)]">
           O que você recebe na Pet a Vet
         </h2>
       </Reveal>
 
-      <Reveal delay={80} className="relative mt-11">
+      <Reveal delay={80} className="relative mt-11 px-5 md:px-6">
         <CarouselArrows
           placement="sides"
           onPrev={() => step(-1)}
@@ -358,17 +363,18 @@ export function IncludedSection() {
         />
         <div
           ref={trackRef}
-          className="pv-no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-12 pb-1 md:snap-none md:gap-2 md:px-6"
+          className="pv-no-scrollbar flex snap-x snap-mandatory gap-0 overflow-x-auto pb-1 md:snap-none md:gap-2"
         >
           {INCLUDED.map((c) => (
             <figure
               key={c.title.join(" ")}
-              className="relative aspect-[238/337] w-[calc(100vw-6.5rem)] shrink-0 snap-center overflow-hidden rounded-[10px] bg-[#ece7e1] md:w-[18rem] lg:w-[23rem]"
+              className="relative aspect-[238/337] w-full min-w-full shrink-0 snap-start overflow-hidden rounded-[10px] bg-[#ece7e1] md:aspect-[238/320] md:w-[calc((100%-1.5rem)/4)] md:min-w-0"
             >
               <img
                 src={c.img}
                 alt={c.alt}
                 loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover opacity-95"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
